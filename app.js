@@ -1,4 +1,5 @@
 let stockQuote;
+let userLogged = null;
 
 const finnhub = require('finnhub');
 
@@ -100,6 +101,36 @@ app.post('/login', (req, res) => {
     console.log(error)
   }
 })
+
+
+
+
+
+
+app.post('/getUser', (req, res) => {
+
+  try {
+      res.status(201)
+      res.send(userLogged)
+  } catch (error) {
+    res.status(500)
+    res.send(error.message)
+    console.log(error)
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.post('/getcontact', (req, res) => {
 
   try {
