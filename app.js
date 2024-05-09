@@ -1,21 +1,21 @@
 let stockQuote;
 let userLogged = null;
 
-const finnhub = require('finnhub');
+// const finnhub = require('finnhub');
 
-const api_key = finnhub.ApiClient.instance.authentications['api_key'];
-api_key.apiKey = "cmo6he1r01qj3mal97u0cmo6he1r01qj3mal97ug"
-const finnhubClient = new finnhub.DefaultApi()
+// const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+// api_key.apiKey = "cmo6he1r01qj3mal97u0cmo6he1r01qj3mal97ug"
+//const finnhubClient = new finnhub.DefaultApi()
 
-finnhubClient.quote("AAPL", (error, data, response) => {
-  console.log("Current : " + data.c)
-});
+// finnhubClient.quote("AAPL", (error, data, response) => {
+//   console.log("Current : " + data.c)
+// });
 
-//Company profile2
-finnhubClient.companyProfile2({'symbol': 'AAPL'}, (error, data, response) => {
-    console.log(data)
-    console.log("Name : " + data.name)
-});
+// //Company profile2
+// finnhubClient.companyProfile2({'symbol': 'AAPL'}, (error, data, response) => {
+//     console.log(data)
+//     console.log("Name : " + data.name)
+// });
 
 
 
@@ -23,7 +23,7 @@ const express = require('express')
 const path = require('path')
 const fs = require('fs')
 const bodyParser = require('body-parser')
-const { error, log } = require('console')
+const { error, log, Console } = require('console')
 
 const app = express()
 
@@ -88,7 +88,7 @@ app.post('/login', (req, res) => {
     }
 
     if (filteredUsers[0].password === login.password) {
-      delete filteredUsers[0].password
+      // delete filteredUsers[0].password
       userLogged = JSON.stringify(filteredUsers[0])
       res.status(201)
       res.send(userLogged)
@@ -123,8 +123,68 @@ app.post('/getUser', (req, res) => {
 
 
 
+app.post('/addtowatchlist', (req, res) => {
+  try {
+    console.log(JSON.parse(userLogged));
+    let newLoggedUser = JSON.parse(userLogged);
+    newLoggedUser.watchlist.push(req.body)
+    userLogged = JSON.stringify(newLoggedUser);
+    // userLogged.watchlist.push(req.body); 
+    
+    // if (updated) {
+    //   fs.writeFileSync("properties.json", JSON.stringify(allProperties))
+    saveUpdate(userLogged)
+
+       res.status(201)
+       res.send("stock add sucessfullyx")
+    // } else {
+    //   throw new Error('Can\'t find this property')
+    // }
+
+  } catch (error) {
+    res.status(500)
+    res.send(error.message)
+    console.log('Error', error.message);
+  }
+})
 
 
+app.post('/removefromwatchlist', (req, res) => {
+  try {
+    console.log(JSON.parse(userLogged));
+    let newLoggedUser = JSON.parse(userLogged);
+    console.log(req.body)
+
+    let indextoremove = -1;
+
+    for(let i = 0; i < newLoggedUser.watchlist.length; i++){
+
+      if ( newLoggedUser.watchlist[i].symbol == req.body.symbol){
+        console.log("i = " + i)
+        newLoggedUser.watchlist.splice(i,1)
+      }
+    }
+
+
+    userLogged = JSON.stringify(newLoggedUser);
+    // userLogged.watchlist.push(req.body); 
+    
+    // if (updated) {
+    //   fs.writeFileSync("properties.json", JSON.stringify(allProperties))
+    saveUpdate(userLogged)
+
+       res.status(201)
+       res.send("stock removed sucessfully")
+    // } else {
+    //   throw new Error('Can\'t find this property')
+    // }
+
+  } catch (error) {
+    res.status(500)
+    res.send(error.message)
+    console.log('Error', error.message);
+  }
+})
 
 
 
@@ -254,6 +314,8 @@ app.post('/addproperty', (req, res) => {
     console.log('Error', error.message);
   }
 })
+
+
 app.post('/editproperty', (req, res) => {
   try {
     editProperty = req.body
@@ -337,3 +399,33 @@ app.listen(3000, () => {
   console.log('App lstening on port 3000!')
 })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function saveUpdate(userToUpdate){
+
+  const allUsers = JSON.parse(fs.readFileSync("users.json")).filter(u => u.id !== JSON.parse(userToUpdate).id);
+  allUsers.push(JSON.parse(userToUpdate));
+  //console.log("All Users");
+  //console.log(allUsers);
+  //console.log(allUsers);
+
+
+  fs.writeFileSync("users.json", JSON.stringify(allUsers))
+
+}
