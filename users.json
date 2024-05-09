@@ -5,7 +5,21 @@
     "email": "admin",
     "phone": "14036011100",
     "password": "admin",
-    "type": "admin"
+    "type": "admin",
+    "cash": [{ "currency": "USD", "balance": 7486.78 }],
+    "stock": [
+      { "symbol": "TSLA", "qt": 123 },
+      { "symbol": "MSFT", "qt": 321 },
+      { "symbol": "MCD", "qt": 4 },
+      { "symbol": "V", "qt": 25 },
+      { "symbol": "AAPL", "qt": 3 },
+      { "symbol": "PBR", "qt": 13 }
+    ],
+    "watchlist": [
+      { "symbol": "ITUB" },
+      { "symbol": "STNE" },
+      { "symbol": "KO" }
+    ]
   },
   {
     "id": "1",

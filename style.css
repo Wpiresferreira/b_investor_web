@@ -82,35 +82,44 @@ footer > * {
     font-size: x-large;
 }
 
-#tittle-cash{
-    width: 39vw;
+.cash-left{
+    width: 25vw;
 }
-#data-cash{
-    width: 39vw;
+.cash-center{
+    width: 25vw;
+    text-align: right;
+}
+.cash-right{
+    width: 25vw;
     text-align: right;
 }
 
 #tittle-total{
-    width: 39vw;
+    width: 37.5vw;
 }
 #data-total{
-    width: 39vw;
+    width: 37.5vw;
     text-align: right;
 }
 .img-stock{
     width: 8vw;
     padding: 2vw;
 }
-.portfolio-left{
+.stock-left{
     width: 25vw;
 }
-.portfolio-center{
+.stock-center{
     width: 25vw;
     text-align: right;
 }
-.portfolio-rigth{
+.stock-right{
     width: 25vw;
     text-align: right;
+}
+.description{
+    white-space: nowrap;
+    font-size: x-small;
+    font-weight: 400;
 }
 
 #container {
@@ -171,10 +180,9 @@ footer > * {
 #top-bar {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100vw;
+  width: 90vw;
+  left: 5vw;
   position: relative;
-  justify-content: center;
   padding-top: 10vw;
 }
 #top-bar img {
@@ -197,10 +205,11 @@ footer > * {
   text-align: center;
 }
 
-.welcome {
-  color: white;
-  text-decoration: underline;
+#welcome {
+  color: var(--color5);
   text-align: right;
+  font-size: x-small;
+  font-style: italic;
 }
 
 #welcome-message {
@@ -224,37 +233,4 @@ li {
 
 #msgLogin {
   color: red;
-}
-
-#squares {
-  display: flex;
-}
-
-#square0 {
-  width: 20vw;
-  height: 50px;
-}
-
-#square1 {
-  background-color: var(--color1);
-  width: 20vw;
-  height: 50px;
-}
-
-#square2 {
-  background-color: var(--color2);
-  width: 20vw;
-  height: 50px;
-}
-
-#square3 {
-  background-color: var(--color3);
-  width: 20vw;
-  height: 50px;
-}
-
-#square4 {
-  background-color: var(--color4);
-  width: 25vw;
-  height: 50px;
 }
