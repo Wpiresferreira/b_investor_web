@@ -1,5 +1,25 @@
 let stockQuote;
 let userLogged = null;
+let sessions = null;
+
+
+generateSessionID()
+
+function generateSessionID(){
+  let sessionID = "";
+  for (let i = 0; i< 12; i++){
+    let c = Math.floor(Math.random() * 62);
+    if(c<10){
+      c +=48;
+    }else if(c<36){
+      c+=55;
+    }else{
+      c+=61;
+    }
+    sessionID +=String.fromCharCode(c);
+  }
+  console.log(sessionID);
+}
 
 // const finnhub = require('finnhub');
 
