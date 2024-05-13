@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="script.js" defer></script>
+  <script src="util.js" defer></script>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet"
+  />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B Investor</title>
+  </head>
+  <body>
+    <header class="header-signup">
+      <img src="b_investor_logo2.png" alt="" srcset="" />
+      <div class="in-tittle-signup">
+        <h1>Sign up</h1>
+      </div>
+    </header>
+    <main class="main-signup">
+      <div class="in-box">
+        <input type="email" name="in-username" class="in-general" id="in-username" />
+        <label for="in-username" id="label-in-username">Email / Username</label>
+        <i class="fa in-validation" id="in-username-validation"></i>
+      </div>
+      <div class="in-box">
+        <input type="text" name="in-name" class="in-general" id="in-name" />
+        <label for="in-name" class="label-in-general" id="label-in-name">Name</label>
+        <i class="fa in-validation" id="in-name-validation"></i>
+      </div>
+      <div class="in-box">
+        <input type="text" name="in-initial-cash" class="in-general" id="in-initial-cash" />
+        <label for="in-initial-cash" class="label-in-general" id="label-in-initial-cash">Initial Cash USD</label>
+        <i class="fa in-validation" id="in-initial-cash-validation"></i>
+      </div>
+      <div class="in-box">
+        <input type="password" name="in-password" id="in-password" />
+        <label for="in-password" class="label-in-general" id="label-in-password">Password</label>
+        <i class="fa in-validation" id="in-password-validation"></i>
+        <i
+          class="fa fa-eye-slash icon-visibility"
+          id="in-password-visibility"
+          onclick="toggleVisibility(this)"
+        ></i>
+      </div>
+
+      <div class="in-box">
+        <input type="password"class="in-general" name="in-retype-password" id="in-retype-password" />
+        <label for="in-retype-password" class="label-in-general" id="label-in-retype-password">Retype Password</label>
+        <i class="fa in-validation" id="in-retype-password-validation"></i>
+        <i
+          class="fa fa-eye-slash icon-visibility"
+          id="in-retype-password-visibility"
+          onclick="toggleVisibility(this)"
+        ></i>
+      </div>
+
+      <div id="in-message"></div>
+      <button type="button" id="in-button" onclick="signup()">Sign Up</button>
+      <div class="short-message" onclick="goSignin()">
+        <div>Already registered? </div>
+        <div class="short-link">Sign in</div>
+      </div>
+    </main>
+  </body>
+</html>

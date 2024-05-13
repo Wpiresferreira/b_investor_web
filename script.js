@@ -1,14 +1,41 @@
 let userLogged = null;
 let checkedSession = false;
+let actualSessionID = null;
 
 let host = "http://137.186.165.104:3000";
-// host = "http://localhost:3000";
+host = "http://localhost:3000";
 
 let api_key = "cmo6he1r01qj3mal97u0cmo6he1r01qj3mal97ug";
 
+
+function toggleVisibility(item){
+  let newId = item.id.toString().replace( "-visibility","");    
+  let parent = document.getElementById(newId);
+
+  if(
+  item.classList.toString().includes("fa-eye-slash")){
+    item.classList.remove("fa-eye-slash");
+    parent.type = "text";
+    item.classList.add("fa-eye");
+  }else{
+    item.classList.add("fa-eye-slash");
+    item.classList.remove("fa-eye");
+    parent.type = "password";
+  };
+}
+
 async function login() {
-  let username = document.getElementById("input_email");
-  let password = document.getElementById("input_password");
+  let username = document.getElementById("in-username");
+  let password = document.getElementById("in-password");
+  let checkbox = document.getElementById("in-checkbox");
+  let message = document.getElementById("in-message");
+
+
+  if(checkbox.checked == true){
+    localStorage.setItem("userSaved", username.value);
+  }else{
+    localStorage.setItem("userSaved", "");
+  }
 
   try {
     const response = await fetch("https://api.ipify.org/?format=json");
@@ -39,10 +66,15 @@ async function login() {
     const response = await fetch(url, requestOptions);
     const result = await response.text();
     const resStatus = await response.status;
+
     if (resStatus == "500") {
-    } else if (resStatus == "201") {
+      message.innerText = "Incorrect Credentials";
+    } else if (resStatus == "201" || resStatus == "200") {
+      console.log(result);
+      console.log(resStatus);
       resultObj = JSON.parse(result);
-      userLogged = resultObj;
+      sessionStorage.setItem("session", resultObj.sessionID);
+      console.log(sessionStorage.getItem("session"));
       goPortfolio();
       //updateLogin()
       //listProperties('all')
@@ -50,6 +82,112 @@ async function login() {
   } catch (error) {
     console.error(error);
   }
+}
+
+async function signup() {
+  if (!areAllFieldsValid()) {
+    alert("Please validate all fields!");
+    return;
+  }
+  let username = document.getElementById("in-username");
+  let name = document.getElementById("in-name");
+  let initialCash = document.getElementById("in-initial-cash");
+  let password = document.getElementById("in-password");
+  let retypePassword = document.getElementById("in-retype-password");
+  let objIp;
+
+  try {
+    const response = await fetch("https://api.ipify.org/?format=json");
+    const result = await response.text();
+    const resStatus = await response.status;
+    console.log(resStatus);
+    //console.log(result);
+    objIp = JSON.parse(result);
+  } catch (error) {
+    console.error(error);
+  }
+
+  let newUser = {
+    name: name.value,
+    email: username.value,
+    password: password.value,
+    cash: [
+      {
+        currency: "USD",
+        balance: parseFloat(initialCash.value.replace(",", "")).toFixed(2),
+      },
+    ],
+    stock: [],
+    watchlist: [],
+    ip: objIp.ip,
+    dateCreation: Date.now(),
+  };
+  console.log(newUser);
+
+  // objLogin = {
+  //   username: username.value,
+  //   password: password.value,
+  //   ip: objIp.ip,
+  // };
+  JSONnewUser = JSON.stringify(newUser);
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSONnewUser,
+    redirect: "follow",
+  };
+  const url = host + "/signup";
+  try {
+    const response = await fetch(url, requestOptions);
+    const result = await response.text();
+    const resStatus = await response.status;
+
+    if (resStatus == "500") {
+      alert("Signup Error")
+    } else if (resStatus == "201" || resStatus == "200") {
+      console.log(result);
+      console.log(resStatus);
+      // resultObj = JSON.parse(result);
+      // sessionStorage.setItem("session", resultObj.sessionID);
+      // console.log(sessionStorage.getItem("session"));
+      // goPortfolio();
+      //updateLogin()
+      //listProperties('all')
+      localStorage.setItem("userSaved", username.value);
+      console.log("userSaved: " + username.value);
+
+      username.value = "";
+      name.value = "";
+      initialCash.value = "";
+      password.value = "";
+      retypePassword.value = "";
+
+      // validationEmail.innerText = "";
+      // validationName.innerText = "";
+      // validationInitialCash.innerText = "";
+      // validationPassword.innerText = "";
+      // validationRetypePassword.innerText = "";
+
+      goSignin();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function checkUserSaved() {
+  let username = document.getElementById("in-username");
+  let password = document.getElementById("in-password");
+  let checkbox = document.getElementById("in-checkbox");
+  let userSaved = localStorage.getItem("userSaved");
+
+  if (userSaved != null) {
+    username.value = userSaved;
+    password.focus();
+  }
+  checkbox.checked = true;
 }
 
 async function checkSession() {
@@ -61,10 +199,14 @@ async function checkSession() {
 
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
+
+  sessionObj = { sessionID: sessionStorage.getItem("session") };
+  sessionJSON = JSON.stringify(sessionObj);
+
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
-    body: null,
+    body: sessionJSON,
     redirect: "follow",
   };
   const url = host + "/getUser";
@@ -73,7 +215,7 @@ async function checkSession() {
     const result = await response.text();
     const resStatus = await response.status;
     if (resStatus == "500") {
-    } else if (resStatus == "201") {
+    } else if (resStatus == "201" || resStatus == "200") {
       resultObj = JSON.parse(result);
       userLogged = resultObj;
     }
@@ -105,7 +247,9 @@ async function checkSession() {
 
     let cashRight = document.createElement("div");
     cashRight.className = "cash-right";
-    cashRight.innerHTML = formatNumber(userLogged.cash[i].balance.toFixed(2));
+    cashRight.innerHTML = formatNumber(
+      parseFloat(userLogged.cash[i].balance).toFixed(2)
+    );
 
     box.appendChild(img);
     box.appendChild(cashLeft);
@@ -265,13 +409,18 @@ function updateTotal() {
   }
 
   let totalElement = document.getElementById("data-total");
-  totalElement.innerHTML = formatNumber(total.toFixed(2));
+  totalElement.innerHTML = formatNumber(parseFloat(total).toFixed(2));
 }
 
 async function checkSessionWatch() {
   if (checkedSession) {
     return;
   }
+
+
+  
+  sessionObj = { sessionID: sessionStorage.getItem("session") };
+  sessionJSON = JSON.stringify(sessionObj);
 
   let welcome = document.getElementById("welcome");
 
@@ -280,7 +429,7 @@ async function checkSessionWatch() {
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
-    body: null,
+    body: sessionJSON,
     redirect: "follow",
   };
   const url = host + "/getUser";
@@ -439,9 +588,8 @@ async function removeElement() {
   console.log(this.id.split("-")[1]);
 
   console.log(userLogged.watchlist);
-  let itemtoremove = {"symbol" : this.id.split("-")[1]};
+  let itemtoremove = { symbol: this.id.split("-")[1] };
 
-  
   JSONRemoveStock = JSON.stringify(itemtoremove);
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -496,6 +644,13 @@ function goTransaction() {
 }
 function goProfile() {
   window.location.href = "/profile.html";
+}
+function goSignup() {
+  window.location.href = "/signup.html";
+}
+
+function goSignin() {
+  window.location.href = "/index.html";
 }
 
 function autocomplete(inp, arr) {

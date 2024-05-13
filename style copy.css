@@ -1,0 +1,194 @@
+:root {
+  --primary: #94b0da;
+  --primary-dark: #3c5b8a;
+  --primary-light: #dcedff;
+  --secondary: #8f91a2;
+  --color3: #505a5b;
+  --color4: #343f3e;
+  --color5: ##e05858;
+  --neutral900: #171a1fff;
+  --neutral550: #6f7787ff;
+  --neutral500: #9095a1ff;
+  --white: #ffffffff;
+  --error: #de3b40;
+  --defaultFont: "Asap", sans-serif;
+}
+
+* {
+  font-family: var(--defaultFont);
+  color: var(--color4);
+}
+
+
+@media only screen and (max-width: 600px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary);
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35vh;
+    width: 100vw;
+  }
+  
+  header img {
+    border-radius: 200px;
+    border-color: var(--primary-light);
+    border-style: solid;
+    height: 50%;
+    width: auto;
+  }
+  
+  main {
+    display: block;
+    /* padding: 0 10vh 0 10vh; */
+    height: 65vh;
+    width: 100vw;
+    background-color: var(--primary-light);
+    border-radius: 8px 8px 0 0;
+  }
+  .in-tittle {
+    padding: 0;
+    max-height: none;
+    text-align: center;
+  }
+
+
+  .in-box {
+    display: block;
+    width: 80vw;
+    height: 8vh;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+
+  #in-username {
+    position: absolute;
+    width: 80vw;
+    height: 8vh;
+    border-radius: 10px;
+    border-style: none;
+    font-size: larger;
+    padding-left: 20px;
+    padding-top: 30px;
+    box-sizing: border-box;
+    margin-left: 10vw;
+  }
+
+  #label-in-username {
+    /* margin-top: 10vh; */
+    margin-left: 11vw;
+    position: absolute;
+    font-size: medium;
+    padding-top: 4px;
+    padding-left: 4px;
+    font-weight: 600;
+  }
+
+  #label-in-password {
+    /* margin-top: 10vh; */
+    margin-left: 11vw;
+    position: absolute;
+    font-size: medium;
+    padding-top: 4px;
+    padding-left: 4px;
+    font-weight: 600;
+  }
+
+  #in-password {
+    position: absolute;
+    width: 80vw;
+    height: 8vh;
+    border-radius: 10px;
+    border-style: none;
+    font-size: larger;
+    padding-left: 20px;
+    padding-top: 30px;
+    box-sizing: border-box;
+    margin-left: 10vw;
+  }
+  #in-password-validation {
+    position: absolute;
+    padding: 3vh 2vw 3vh 2vw;
+    right: 10vw;
+    text-align: center;
+    color: var(--secondary);
+  }
+  #in-username-validation {
+    position: absolute;
+    padding: 3vh 2vw 3vh 2vw;
+    right: 10vw;
+    text-align: center;
+    color: var(--secondary);
+  }
+  #in-password-visibility {
+    position: absolute;
+    padding: 3vh 2vw 3vh 2vw;
+    right: 15vw;
+    text-align: center;
+    color: var(--secondary);
+  }
+
+  #in-message {
+    margin-left: 10vw;
+    padding: 0 0 2vh 0;
+    color: var(--error);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  #in-checkbox {
+    width: 3vh;
+    height: 4vh;
+    border-radius: 10px;
+    margin-left: 10vw;
+    vertical-align: middle;
+  }
+
+  #label-in-checkbox {
+    height: 4vh;
+    vertical-align: middle;
+    font-size: medium;
+    font-weight: 600;
+  }
+
+  #in-button {
+    margin-top: 12px;
+    margin-left: 10vw;
+    position: relative;
+    width: 80vw;
+    height: 8vh;
+    padding: 0 20px;
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 800;
+    color: var(--white);
+    background: var(--primary-dark);
+    opacity: 1;
+    border: none;
+    border-radius: 8px;
+  }
+  #in-button:hover {
+    color: #ffffffff;
+    background: var(--primary);
+  }
+
+  #in-go-signup {
+    display: flex;
+    padding: 2vh;
+    justify-content: center;
+    /* margin-left: 10vw; */
+  }
+
+  #in-signup-link {
+    padding-left: 1vw;
+    font-weight: 800;
+    color: var(--primary-dark);
+  }
+}
