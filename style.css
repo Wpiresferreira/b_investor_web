@@ -267,6 +267,52 @@ button:hover {
   color: var(--primary-dark);
 }
 
+
+
+
+
+
+
+
+footer {
+  position: fixed;
+  background-color: white;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+footer > * {
+  flex: 1 1 0;
+}
+.box-footer {
+  border: 1px solid var(--primary-dark);
+  padding: 10px;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.box-item {
+  display: block;
+  text-align: center;
+  font-size: xx-large;
+  color: var(--primary-dark);
+}
+.box-label {
+  font-size: x-small;
+  text-align: center;
+  margin-top: 10px;
+  color: var(--primary-dark);
+}
+
+
+
+
+
+
+
 @media only screen and (max-width: 600px) {
   body {
     display: flex;
@@ -306,7 +352,7 @@ button:hover {
     border-radius: 200px;
     border-color: var(--primary-light);
     border-style: solid;
-    height: 50%; 
+    height: 50%;
     width: auto;
   }
 
@@ -517,6 +563,106 @@ button:hover {
   #in-signup-link {
     padding-left: 1vw;
     font-weight: 800;
+    color: var(--primary-dark);
+  }
+
+  .container-portfolio {
+    display: inline-flex;
+    width: 90vw;
+    margin-left: 5vw;
+    border-radius: 5px;
+    background-color: var(--color1);
+    height: 50px;
+    margin-top: 5px;
+    align-items: center;
+    background-color: var(--white);
+  }
+
+  .img-cash {
+    color: var(--color5);
+    width: 12vw;
+    vertical-align: middle;
+    text-align: center;
+    font-size: x-large;
+  }
+
+  .cash-left {
+    width: 25vw;
+  }
+  .cash-center {
+    width: 25vw;
+    text-align: right;
+  }
+  .cash-right {
+    width: 25vw;
+    text-align: right;
+  }
+
+  #tittle-total {
+    width: 37.5vw;
+  }
+  #data-total {
+    width: 37.5vw;
+    text-align: right;
+  }
+  .img-stock {
+    width: 8vw;
+    padding: 2vw;
+  }
+  .stock-left {
+    width: 25vw;
+  }
+  .stock-center {
+    width: 25vw;
+    text-align: right;
+  }
+  .stock-right {
+    width: 25vw;
+    text-align: right;
+  }
+  .stock-center-watch {
+    width: 44vw;
+    text-align: right;
+  }
+  .stock-right-watch {
+    width: 6vw;
+    text-align: right;
+  }
+  .autocomplete {
+    position: relative;
+    display: inline-block;
+  }
+
+  footer {
+    position: fixed;
+    background-color: white;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  footer > * {
+    flex: 1 1 0;
+  }
+  .box-footer {
+    border: 1px solid var(--primary-dark);
+    padding: 10px;
+    border-radius: 2px;
+    text-align: center;
+  }
+
+  .box-item {
+    display: block;
+    text-align: center;
+    font-size: xx-large;
+    color: var(--primary-dark);
+  }
+  .box-label {
+    font-size: x-small;
+    text-align: center;
+    margin-top: 10px;
     color: var(--primary-dark);
   }
 }

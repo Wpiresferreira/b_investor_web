@@ -195,7 +195,7 @@ async function checkSession() {
     return;
   }
 
-  let welcome = document.getElementById("welcome");
+  //let welcome = document.getElementById("welcome");
 
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -216,6 +216,7 @@ async function checkSession() {
     const resStatus = await response.status;
     if (resStatus == "500") {
     } else if (resStatus == "201" || resStatus == "200") {
+      console.log("Session checked sucessful")
       resultObj = JSON.parse(result);
       userLogged = resultObj;
     }
@@ -227,7 +228,7 @@ async function checkSession() {
     alert("Invalid Session");
     window.location.href = "/index.html";
   }
-  welcome.innerHTML = "Welcome, " + userLogged.name;
+  //welcome.innerHTML = "Welcome, " + userLogged.name;
 
   let myRecyclerView = document.getElementById("myRecyclerView");
   for (let i = 0; i < userLogged.cash.length; i++) {
