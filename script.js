@@ -4,24 +4,61 @@ let actualSessionID = null;
 
 let host = "http://137.186.165.104:3000";
 host = "http://localhost:3000";
+var api_key;
 
-let api_key = "cmo6he1r01qj3mal97u0cmo6he1r01qj3mal97ug";
+async function getKey() {
+  console.log("function getKey called");
+  
+  sessionObj = { sessionID: sessionStorage.getItem("session") };
+  sessionJSON = JSON.stringify(sessionObj);
 
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: sessionJSON,
+    redirect: "follow",
+  };
+  const url = host + "/getKey";
+  try {
+    const response = await fetch(url, requestOptions);
+    const result = await response.text();
+    const resStatus = await response.status;
 
-function toggleVisibility(item){
-  let newId = item.id.toString().replace( "-visibility","");    
+    if (resStatus == "500") {
+      //message.innerText = "Invalid Session - Error to get API key";
+    } else if (resStatus == "201" || resStatus == "200") {
+      console.log("result");
+      console.log(result);
+      console.log(resStatus);
+      resultObj = JSON.parse(result);
+      sessionStorage.setItem("apiKey", resultObj.api_key);
+      console.log("sessionStorage.getItem('apiKey')");
+      console.log(sessionStorage.getItem("apiKey"));
+      api_key = sessionStorage.getItem("apiKey")
+    goPortfolio();
+      //updateLogin()
+      //listProperties('all')
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function toggleVisibility(item) {
+  let newId = item.id.toString().replace("-visibility", "");
   let parent = document.getElementById(newId);
 
-  if(
-  item.classList.toString().includes("fa-eye-slash")){
+  if (item.classList.toString().includes("fa-eye-slash")) {
     item.classList.remove("fa-eye-slash");
     parent.type = "text";
     item.classList.add("fa-eye");
-  }else{
+  } else {
     item.classList.add("fa-eye-slash");
     item.classList.remove("fa-eye");
     parent.type = "password";
-  };
+  }
 }
 
 async function login() {
@@ -30,10 +67,9 @@ async function login() {
   let checkbox = document.getElementById("in-checkbox");
   let message = document.getElementById("in-message");
 
-
-  if(checkbox.checked == true){
+  if (checkbox.checked == true) {
     localStorage.setItem("userSaved", username.value);
-  }else{
+  } else {
     localStorage.setItem("userSaved", "");
   }
 
@@ -74,8 +110,10 @@ async function login() {
       console.log(resStatus);
       resultObj = JSON.parse(result);
       sessionStorage.setItem("session", resultObj.sessionID);
+      console.log("sessionStorage.getItem('session')");
       console.log(sessionStorage.getItem("session"));
-      goPortfolio();
+      api_key = getKey();
+      //goPortfolio();
       //updateLogin()
       //listProperties('all')
     }
@@ -145,7 +183,7 @@ async function signup() {
     const resStatus = await response.status;
 
     if (resStatus == "500") {
-      alert("Signup Error")
+      alert("Signup Error");
     } else if (resStatus == "201" || resStatus == "200") {
       console.log(result);
       console.log(resStatus);
@@ -216,7 +254,7 @@ async function checkSession() {
     const resStatus = await response.status;
     if (resStatus == "500") {
     } else if (resStatus == "201" || resStatus == "200") {
-      console.log("Session checked sucessful")
+      console.log("Session checked sucessful");
       resultObj = JSON.parse(result);
       userLogged = resultObj;
     }
@@ -331,13 +369,14 @@ async function checkSession() {
 
 async function updateDescription() {
   for (let i = 0; i < userLogged.stock.length; i++) {
+    console.log(api_key);
     //Company profile2
     try {
       const response = await fetch(
         "https://finnhub.io/api/v1/stock/profile2?symbol=" +
           userLogged.stock[i].symbol +
           "&token=" +
-          api_key
+          sessionStorage.getItem("apiKey")
       );
       const result = await response.text();
       const resStatus = await response.status;
@@ -365,7 +404,7 @@ async function updateQuote() {
         "https://finnhub.io/api/v1/quote?symbol=" +
           userLogged.stock[i].symbol +
           "&token=" +
-          api_key
+          sessionStorage.getItem("apiKey")
       );
       const result = await response.text();
       const resStatus = await response.status;
@@ -400,7 +439,7 @@ async function updateQuote() {
 function updateTotal() {
   let total = 0;
 
-  total += userLogged.cash[0].balance;
+  total += parseFloat(userLogged.cash[0].balance);
   for (let i = 0; i < userLogged.stock.length; i++) {
     let valueElement = document.getElementById(
       "value-" + userLogged.stock[i].symbol
@@ -418,8 +457,6 @@ async function checkSessionWatch() {
     return;
   }
 
-
-  
   sessionObj = { sessionID: sessionStorage.getItem("session") };
   sessionJSON = JSON.stringify(sessionObj);
 
@@ -451,7 +488,7 @@ async function checkSessionWatch() {
     alert("Invalid Session");
     window.location.href = "/index.html";
   }
-  welcome.innerHTML = "Welcome, " + userLogged.name;
+ // welcome.innerHTML = "Welcome, " + userLogged.name;
 
   let myRecyclerView = document.getElementById("myRecyclerView");
 
@@ -528,7 +565,7 @@ async function updateDescriptionWatchlist() {
         "https://finnhub.io/api/v1/stock/profile2?symbol=" +
           userLogged.watchlist[i].symbol +
           "&token=" +
-          api_key
+          sessionStorage.getItem("apiKey")
       );
       const result = await response.text();
       const resStatus = await response.status;
@@ -558,7 +595,7 @@ async function updateQuoteWatchlist() {
         "https://finnhub.io/api/v1/quote?symbol=" +
           userLogged.watchlist[i].symbol +
           "&token=" +
-          api_key
+          sessionStorage.getItem("apiKey")
       );
       const result = await response.text();
       const resStatus = await response.status;

@@ -84,8 +84,11 @@ app.post("/getquote", (req, res) => {
 app.post("/login", (req, res) => {
   try {
     login = req.body;
-    // console.log(login);
+    console.log("login");
+    console.log(login);
     const listUsers = JSON.parse(fs.readFileSync("users.json"));
+    console.log("listUsers");
+    console.log(listUsers);
     let filteredUsers = listUsers.filter((user) => {
       return user.email == login.username && user.password == login.password;
     });
@@ -96,7 +99,13 @@ app.post("/login", (req, res) => {
 
     if (filteredUsers[0].password === login.password) {
       // delete filteredUsers[0].password
+      // delete filteredUsers[0].ip
+      // delete filteredUsers[0].dateCreation
+       
       userLogged = JSON.stringify(filteredUsers[0]);
+      console.log("userLogged");
+      console.log(userLogged);
+
       let newSessionID = generateSessionID();
       sessions.push({
         sessionID: newSessionID,
@@ -104,9 +113,16 @@ app.post("/login", (req, res) => {
         sessionStart: Date.now(),
         ip: login.ip,
       });
-      // console.log("newSessionID: " + newSessionID);
+       console.log("newSessionID: " + newSessionID);
       // console.log("JSON.parse(userLogged).id : " + JSON.parse(userLogged).id);
       // console.log(sessions);
+      console.log("sessions: ");
+      console.log(sessions.length);
+      console.log(sessions[0]);
+      console.log(sessions[1]);
+      console.log(sessions[2]);
+      console.log(sessions[3]);
+      console.log(sessions[4]);
       let sessionIDObj = { sessionID: newSessionID };
       res.send(JSON.stringify(sessionIDObj));
       res.status(201);
@@ -118,6 +134,8 @@ app.post("/login", (req, res) => {
     res.send(error.message);
     console.log(error);
   }
+
+  console.log("End of Login");
 });
 
 app.post("/signup", (req, res) => {
@@ -126,7 +144,13 @@ app.post("/signup", (req, res) => {
     // console.log(login);
 
     // fs.appendFileSync("users.json", JSON.stringify(newUser));
-    const listUsers = JSON.parse(fs.readFileSync("users.json"));
+    var listUsers;
+    try{
+      listUsers = JSON.parse(fs.readFileSync("users.json"));
+    }
+    catch{
+      listUsers = [];
+    }
     let countUsers = listUsers.length
     newUser.id = countUsers+2000
     listUsers.push(newUser);
@@ -165,6 +189,7 @@ app.post("/getUser", (req, res) => {
   try {
     sessionJSON = req.body;
     sessionObj = sessionJSON;
+    console.log("sessionJSON.sessionID");
     console.log(sessionJSON.sessionID);
 
     //const listUsers = JSON.parse(fs.readFileSync("session.json"))
@@ -174,11 +199,11 @@ app.post("/getUser", (req, res) => {
       return s.sessionID == sessionObj.sessionID;
     });
     console.log(session[0]);
-    console.log(session[0].userLoggedID);
-
+    
     let filteredUsers = listUsers.filter((user) => {
       return user.id == session[0].userLoggedID;
     });
+    console.log(session[0].userLoggedID);
 
     res.status(201);
     res.send(filteredUsers[0]);
@@ -188,6 +213,38 @@ app.post("/getUser", (req, res) => {
     console.log(error);
   }
 });
+
+app.post("/getKey", (req, res) => {
+
+  console.log("function getKey called");
+   try {
+     sessionJSON = req.body;
+     sessionObj = sessionJSON;
+     console.log(sessionJSON.sessionID);
+
+     //const listUsers = JSON.parse(fs.readFileSync("session.json"))
+     const key = JSON.parse(fs.readFileSync("key.json"));
+
+  //   // let session = sessions.filter((s) => {
+  //   //   return s.sessionID == sessionObj.sessionID;
+  //   // });
+  //   // console.log(session[0]);
+  //   console.log("key : " + key[0].api_key );
+  //  // let keyJSON = JSON.stringify(key[0])
+
+  //   // let filteredUsers = listUsers.filter((user) => {
+  //   //   return user.id == session[0].userLoggedID;
+  //   // });
+
+     res.status(201);
+     res.send(key[0]);
+   } catch (error) {
+  //   res.status(500);
+  //   res.send(error.message);
+  //   console.log(error);
+   }
+});
+
 
 app.post("/addtowatchlist", (req, res) => {
   try {

@@ -269,7 +269,11 @@ button:hover {
 
 
 
-
+.description{
+  white-space: nowrap;
+  font-size: small;
+  overflow: hidden;
+}
 
 
 
