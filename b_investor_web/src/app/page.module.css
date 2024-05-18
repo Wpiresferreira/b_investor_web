@@ -1,0 +1,7 @@
+.body {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--primary);
+  margin: 0;
+  padding: 0;
+}

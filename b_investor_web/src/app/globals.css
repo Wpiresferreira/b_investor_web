@@ -1,0 +1,30 @@
+:root {
+  --primary: #94b0da;
+  --primary-dark: #3c5b8a;
+  --primary-light: #dcedff;
+  --secondary: #8f91a2;
+  --color3: #505a5b;
+  --color4: #343f3e;
+  --color5: ##e05858;
+  --neutral900: #171a1fff;
+  --neutral550: #6f7787ff;
+  --neutral500: #9095a1ff;
+  --white: #ffffffff;
+  --error: #de3b40;
+  --defaultFont: "Asap", sans-serif;
+}
+
+* {
+  font-family: var(--defaultFont);
+  color: var(--color4);
+}
+
+
+
+body {
+  display: flex;
+  flex-direction:column;
+  background-color: var(--primary);
+  margin: 0;
+  padding: 0;
+}
