@@ -1,13 +1,13 @@
 var username = document.getElementById("in-username");
 var inputName = document.getElementById("in-name");
-var initialCash = document.getElementById("in-initial-cash");
+var depositWithdraw = document.getElementById("in-deposit-withdraw");
 var password = document.getElementById("in-password");
 var retypePassword = document.getElementById("in-retype-password");
 
 var validationEmail = document.getElementById("in-username-validation");
 var validationName = document.getElementById("in-name-validation");
-var validationInitialCash = document.getElementById(
-  "in-initial-cash-validation"
+var validationDepositWithdraw = document.getElementById(
+  "in-deposit-withdraw-validation"
 );
 var validationPassword = document.getElementById("in-password-validation");
 var validationRetypePassword = document.getElementById(
@@ -16,7 +16,7 @@ var validationRetypePassword = document.getElementById(
 
 var checkedUsername = false;
 var checkedName = false;
-var checkedInitialCash = false;
+var checkedDepositWithdraw = false;
 var checkedPassword = false;
 var checkedRetypePassword = false;
 
@@ -88,7 +88,7 @@ inputName.addEventListener("keyup", (event) => {
     // return;
   }
   if (event.key === "Enter" || event.keyCode === 13) {
-    initialCash.focus();
+    depositWithdraw.focus();
   }
   if (isValidName(inputName.value)) {
     validationName.classList.add("fa-check");
@@ -112,54 +112,54 @@ function isValidName(name) {
   return true;
 }
 
-initialCash.addEventListener("keyup", (event) => {
+depositWithdraw.addEventListener("keyup", (event) => {
   if (event.isComposing || event.keyCode === 229) {
     // return;
   }
   if (event.key === "Enter" || event.keyCode === 13) {
     password.focus();
   }
-  if (isValidInitialCash(initialCash.value)) {
+  if (isValidDepositWithdraw(depositWithdraw.value)) {
     // validationInitialCash.innerHTML = "✔";
-    validationInitialCash.style.color = "green";
-    validationInitialCash.classList.add("fa-check");
-    validationInitialCash.classList.remove("fa-remove");
-    checkedInitialCash = true;
+    validationDepositWithdraw.style.color = "green";
+    validationDepositWithdraw.classList.add("fa-check");
+    validationDepositWithdraw.classList.remove("fa-remove");
+    checkedDepositWithdraw = true;
     $("#in-message").text("");
   } else {
-    validationInitialCash.classList.remove("fa-check");
-    validationInitialCash.classList.add("fa-remove");
-    validationInitialCash.style.color = "red";
-    checkedInitialCash = false;
+    validationDepositWithdraw.classList.remove("fa-check");
+    validationDepositWithdraw.classList.add("fa-remove");
+    validationDepositWithdraw.style.color = "red";
+    checkedDepositWithdraw = false;
     $("#in-message").text("Initial cash between 0 and 100,000.00");
     // validationInitialCash.innerHTML =
     // "✘ Insert a value between 0 and 100,000.00";
   }
 });
-initialCash.addEventListener("change", (event) => {
+depositWithdraw.addEventListener("change", (event) => {
   if (
     Number.isNaN(
-      formatNumber(parseFloat(initialCash.value.replace(",", "")).toFixed(2))
+      formatNumber(parseFloat(depositWithdraw.value.replace(",", "")).toFixed(2))
     )
   ) {
     return;
   } else {
-    initialCash.value = formatNumber(
-      parseFloat(initialCash.value.replace(",", "")).toFixed(2)
+    depositWithdraw.value = formatNumber(
+      parseFloat(depositWithdraw.value.replace(",", "")).toFixed(2)
     );
   }
 
-  if (initialCash.value == "NaN") {
-    initialCash.value = "";
+  if (depositWithdraw.value == "NaN") {
+    depositWithdraw.value = "";
   }
 });
 
-function isValidInitialCash(initialCash) {
-  if (Number.isNaN(parseFloat(initialCash))) {
+function isValidDepositWithdraw(depositWithdraw) {
+  if (Number.isNaN(parseFloat(depositWithdraw))) {
     return false;
   }
 
-  if (parseFloat(initialCash) < 0 || parseFloat(initialCash) > 100000) {
+  if (parseFloat(depositWithdraw) < 0 || parseFloat(depositWithdraw) > 100000) {
     return false;
   }
   return true;
@@ -218,9 +218,6 @@ function isValidRetypePassword(retypePassword) {
 
 function areAllFieldsValid() {
   if (
-    checkedInitialCash == true &&
-    checkedName == true &&
-    checkedInitialCash == true &&
     checkedPassword == true &&
     checkedRetypePassword == true
   ) {

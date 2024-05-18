@@ -1,5 +1,5 @@
 let stockQuote;
-let userLogged = null;
+//let userLogged = null;
 const sessions = [];
 
 function generateSessionID() {
@@ -101,7 +101,7 @@ app.post("/login", (req, res) => {
       // delete filteredUsers[0].password
       // delete filteredUsers[0].ip
       // delete filteredUsers[0].dateCreation
-       
+
       userLogged = JSON.stringify(filteredUsers[0]);
       console.log("userLogged");
       console.log(userLogged);
@@ -113,7 +113,7 @@ app.post("/login", (req, res) => {
         sessionStart: Date.now(),
         ip: login.ip,
       });
-       console.log("newSessionID: " + newSessionID);
+      console.log("newSessionID: " + newSessionID);
       // console.log("JSON.parse(userLogged).id : " + JSON.parse(userLogged).id);
       // console.log(sessions);
       console.log("sessions: ");
@@ -145,14 +145,13 @@ app.post("/signup", (req, res) => {
 
     // fs.appendFileSync("users.json", JSON.stringify(newUser));
     var listUsers;
-    try{
+    try {
       listUsers = JSON.parse(fs.readFileSync("users.json"));
-    }
-    catch{
+    } catch {
       listUsers = [];
     }
-    let countUsers = listUsers.length
-    newUser.id = countUsers+2000
+    let countUsers = listUsers.length;
+    newUser.id = countUsers + 2000;
     listUsers.push(newUser);
     fs.writeFileSync("users.json", JSON.stringify(listUsers));
 
@@ -173,7 +172,7 @@ app.post("/signup", (req, res) => {
     //   // console.log("JSON.parse(userLogged).id : " + JSON.parse(userLogged).id);
     //   // console.log(sessions);
     //   let sessionIDObj = {sessionID : newSessionID}
-    res.send(JSON.stringify({"Succes":"OK"}));
+    res.send(JSON.stringify({ Succes: "OK" }));
     res.status(201);
     // } else {
     //   throw new Error('User/Password invalid')
@@ -186,6 +185,7 @@ app.post("/signup", (req, res) => {
 });
 
 app.post("/getUser", (req, res) => {
+  console.log("getUser called");
   try {
     sessionJSON = req.body;
     sessionObj = sessionJSON;
@@ -199,11 +199,11 @@ app.post("/getUser", (req, res) => {
       return s.sessionID == sessionObj.sessionID;
     });
     console.log(session[0]);
-    
+
     let filteredUsers = listUsers.filter((user) => {
       return user.id == session[0].userLoggedID;
     });
-    console.log(session[0].userLoggedID);
+    console.log(filteredUsers[0]);
 
     res.status(201);
     res.send(filteredUsers[0]);
@@ -215,36 +215,34 @@ app.post("/getUser", (req, res) => {
 });
 
 app.post("/getKey", (req, res) => {
-
   console.log("function getKey called");
-   try {
-     sessionJSON = req.body;
-     sessionObj = sessionJSON;
-     console.log(sessionJSON.sessionID);
+  try {
+    sessionJSON = req.body;
+    sessionObj = sessionJSON;
+    console.log(sessionJSON.sessionID);
 
-     //const listUsers = JSON.parse(fs.readFileSync("session.json"))
-     const key = JSON.parse(fs.readFileSync("key.json"));
+    //const listUsers = JSON.parse(fs.readFileSync("session.json"))
+    const key = JSON.parse(fs.readFileSync("key.json"));
 
-  //   // let session = sessions.filter((s) => {
-  //   //   return s.sessionID == sessionObj.sessionID;
-  //   // });
-  //   // console.log(session[0]);
-  //   console.log("key : " + key[0].api_key );
-  //  // let keyJSON = JSON.stringify(key[0])
+    //   // let session = sessions.filter((s) => {
+    //   //   return s.sessionID == sessionObj.sessionID;
+    //   // });
+    //   // console.log(session[0]);
+    //   console.log("key : " + key[0].api_key );
+    //  // let keyJSON = JSON.stringify(key[0])
 
-  //   // let filteredUsers = listUsers.filter((user) => {
-  //   //   return user.id == session[0].userLoggedID;
-  //   // });
+    //   // let filteredUsers = listUsers.filter((user) => {
+    //   //   return user.id == session[0].userLoggedID;
+    //   // });
 
-     res.status(201);
-     res.send(key[0]);
-   } catch (error) {
-  //   res.status(500);
-  //   res.send(error.message);
-  //   console.log(error);
-   }
+    res.status(201);
+    res.send(key[0]);
+  } catch (error) {
+    //   res.status(500);
+    //   res.send(error.message);
+    //   console.log(error);
+  }
 });
-
 
 app.post("/addtowatchlist", (req, res) => {
   try {
@@ -259,10 +257,109 @@ app.post("/addtowatchlist", (req, res) => {
     saveUpdate(userLogged);
 
     res.status(201);
-    res.send("stock add sucessfullyx");
+    res.send("stock add sucessfully");
     // } else {
     //   throw new Error('Can\'t find this property')
     // }
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+    console.log("Error", error.message);
+  }
+});
+
+app.post("/withdraw", (req, res) => {
+  try {
+    let ObjWithdrawRequest = req.body;
+    console.log("ObjWithdrawRequest");
+    console.log(ObjWithdrawRequest);
+
+    let userID = "";
+    sessions.forEach((session) => {
+      console.log(session);
+
+      if (session.sessionID == ObjWithdrawRequest.session) {
+        userID = session.userLoggedID;
+      }
+      console.log(userID);
+    });
+
+    const listUsers = JSON.parse(fs.readFileSync("users.json"));
+
+    let filteredUsers = listUsers.filter((user) => {
+      return user.id == userID;
+    });
+
+    console.log("filteredUsers[0]");
+    console.log(filteredUsers[0]);
+    console.log("filteredUsers[0].cash[0].balance");
+    console.log(filteredUsers[0].cash[0].balance);
+    let previousBalance = parseFloat(filteredUsers[0].cash[0].balance);
+    let valueToWithdraw = ObjWithdrawRequest.withdrawValue;
+
+    if (previousBalance - valueToWithdraw <0) {
+      res.status(500);
+      res.send("Insuficient funds");
+    } else {
+      filteredUsers[0].cash[0].balance = previousBalance - valueToWithdraw ;
+      console.log("Withdraw realized");
+      console.log("filteredUsers[0].cash[0].balance");
+      console.log(filteredUsers[0].cash[0].balance);
+
+      console.log("filteredUsers[0]");
+      console.log(filteredUsers[0]);
+      saveUpdate(JSON.stringify(filteredUsers[0]));
+
+      res.status(201);
+      res.send("Withdraw sucessfull!");
+    }
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+    console.log("Error", error.message);
+  }
+});
+
+app.post("/deposit", (req, res) => {
+  try {
+    let ObjDepositRequest = req.body;
+    console.log("ObjDepositRequest");
+    console.log(ObjDepositRequest);
+
+    let userID = "";
+    sessions.forEach((session) => {
+      console.log(session);
+
+      if (session.sessionID == ObjDepositRequest.session) {
+        userID = session.userLoggedID;
+      }
+    });
+    console.log(userID);
+
+    const listUsers = JSON.parse(fs.readFileSync("users.json"));
+
+    let filteredUsers = listUsers.filter((user) => {
+      return user.id == userID;
+    });
+
+    console.log("filteredUsers[0]");
+    console.log(filteredUsers[0]);
+    console.log("filteredUsers[0].cash[0].balance");
+    console.log(filteredUsers[0].cash[0].balance);
+    let previousBalance = parseFloat(filteredUsers[0].cash[0].balance);
+    let valueToDeposit = ObjDepositRequest.depositValue;
+
+    filteredUsers[0].cash[0].balance = previousBalance + valueToDeposit;
+    console.log("Deposit realized");
+    console.log("filteredUsers[0].cash[0].balance");
+    console.log(filteredUsers[0].cash[0].balance);
+
+    console.log("filteredUsers[0]");
+    console.log(filteredUsers[0]);
+    saveUpdate(JSON.stringify(filteredUsers[0]));
+
+    res.status(201);
+    res.send("Deposit sucessfull!");
   } catch (error) {
     res.status(500);
     res.send(error.message);
@@ -316,7 +413,7 @@ app.post("/getcontact", (req, res) => {
       throw new Error("Invalid owner");
     }
 
-    delete filteredUsers[0].password;
+    // delete filteredUsers[0].password;
     user = JSON.stringify(filteredUsers[0]);
     res.status(201);
     res.send(user);

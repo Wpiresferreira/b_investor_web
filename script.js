@@ -3,12 +3,12 @@ let checkedSession = false;
 let actualSessionID = null;
 
 let host = "http://137.186.165.104:3000";
-host = "http://localhost:3000";
+//host = "http://localhost:3000";
 var api_key;
 
 async function getKey() {
   console.log("function getKey called");
-  
+
   sessionObj = { sessionID: sessionStorage.getItem("session") };
   sessionJSON = JSON.stringify(sessionObj);
 
@@ -36,8 +36,8 @@ async function getKey() {
       sessionStorage.setItem("apiKey", resultObj.api_key);
       console.log("sessionStorage.getItem('apiKey')");
       console.log(sessionStorage.getItem("apiKey"));
-      api_key = sessionStorage.getItem("apiKey")
-    goPortfolio();
+      api_key = sessionStorage.getItem("apiKey");
+      goPortfolio();
       //updateLogin()
       //listProperties('all')
     }
@@ -120,6 +120,11 @@ async function login() {
   } catch (error) {
     console.error(error);
   }
+}
+
+function logout() {
+  sessionStorage.clear();
+  goSignin();
 }
 
 async function signup() {
@@ -358,13 +363,31 @@ async function checkSession() {
     box.appendChild(stockLeft);
     box.appendChild(stockCenter);
     box.appendChild(stockRight);
+    box.addEventListener("click", function () {
+      goTransactionWith(userLogged.stock[i].symbol);
+    });
     myRecyclerView.appendChild(box);
+
+    checkedSession = true;
+
+    updateDescription();
+
+    updateQuote();
+
+    let promise = new Promise((resolve, reject) => {
+      let count = 0;
+      let intervalID = setInterval(() => {
+        count++;
+        updateQuote();
+        if (count > 100) {
+          clearInterval(intervalID);
+          resolve();
+        }
+      }, 3000);
+    });
+
+    // setInterval(await updateQuote(), 1000);
   }
-
-  checkedSession = true;
-
-  updateDescription();
-  updateQuote();
 }
 
 async function updateDescription() {
@@ -397,6 +420,7 @@ async function updateDescription() {
   }
 }
 async function updateQuote() {
+  console.log("updateQuote() called");
   for (let i = 0; i < userLogged.stock.length; i++) {
     //Quote
     try {
@@ -415,13 +439,50 @@ async function updateQuote() {
       console.error(error);
     }
 
-    let last = document.getElementById("last-" + userLogged.stock[i].symbol);
-    last.innerHTML = formatNumber(quote.c.toFixed(2));
+    //pick previous last and change
+    let previousLast = parseFloat(
+      $("#last-" + userLogged.stock[i].symbol).text()
+    );
+    $("#last-" + userLogged.stock[i].symbol).text(
+      formatNumber(quote.c.toFixed(2))
+    );
+    if (previousLast < parseFloat(formatNumber(quote.c.toFixed(2)))) {
+      $("#last-" + userLogged.stock[i].symbol).css("background-color", "green");
+      setTimeout(() => {
+        $("#last-" + userLogged.stock[i].symbol).css(
+          "background-color",
+          "white"
+        );
+      }, 500);
+    } else if (previousLast > parseFloat(formatNumber(quote.c.toFixed(2)))) {
+      $("#last-" + userLogged.stock[i].symbol).css("background-color", "red");
+      setTimeout(() => {
+        $("#last-" + userLogged.stock[i].symbol).css(
+          "background-color",
+          "white"
+        );
+      }, 500);
+    } else {
+      $("#last-" + userLogged.stock[i].symbol).css(
+        "background-color",
+        "#d6d6d8"
+      );
+      setTimeout(() => {
+        $("#last-" + userLogged.stock[i].symbol).css(
+          "background-color",
+          "white"
+        );
+      }, 500);
+    }
+
+    // let last = document.getElementById("last-" + userLogged.stock[i].symbol);
+    // last.innerHTML = formatNumber(quote.c.toFixed(2));
 
     let change = document.getElementById(
       "change-" + userLogged.stock[i].symbol
     );
-    change.innerHTML = quote.dp.toFixed(2) + "%";
+
+    change.innerHTML = quote.dp; // .toFixed(2) + "%";
     if (quote.dp > 0) {
       change.style.color = "green";
     } else if (quote.dp < 0) {
@@ -432,6 +493,9 @@ async function updateQuote() {
     value.innerHTML = formatNumber(
       (userLogged.stock[i].qt * quote.c).toFixed(2)
     );
+
+    console.log("lastPrevious");
+    console.log(previousLast);
   }
   updateTotal();
 }
@@ -488,7 +552,7 @@ async function checkSessionWatch() {
     alert("Invalid Session");
     window.location.href = "/index.html";
   }
- // welcome.innerHTML = "Welcome, " + userLogged.name;
+  // welcome.innerHTML = "Welcome, " + userLogged.name;
 
   let myRecyclerView = document.getElementById("myRecyclerView");
 
@@ -555,6 +619,18 @@ async function checkSessionWatch() {
 
   updateDescriptionWatchlist();
   updateQuoteWatchlist();
+
+  let promise = new Promise((resolve, reject) => {
+    let count = 0;
+    let intervalID = setInterval(() => {
+      count++;
+      updateQuoteWatchlist();
+      if (count > 100) {
+        clearInterval(intervalID);
+        resolve();
+      }
+    }, 3000);
+  });
 }
 
 async function updateDescriptionWatchlist() {
@@ -619,6 +695,47 @@ async function updateQuoteWatchlist() {
     } else if (quote.dp < 0) {
       change.style.color = "red";
     }
+
+    let previousLast = parseFloat(
+      $("#last-" + userLogged.watchlist[i].symbol).text()
+    );
+    $("#last-" + userLogged.watchlist[i].symbol).text(
+      formatNumber(quote.c.toFixed(2))
+    );
+    if (previousLast < parseFloat(formatNumber(quote.c.toFixed(2)))) {
+      $("#last-" + userLogged.watchlist[i].symbol).css(
+        "background-color",
+        "green"
+      );
+      setTimeout(() => {
+        $("#last-" + userLogged.watchlist[i].symbol).css(
+          "background-color",
+          "white"
+        );
+      }, 500);
+    } else if (previousLast > parseFloat(formatNumber(quote.c.toFixed(2)))) {
+      $("#last-" + userLogged.watchlist[i].symbol).css(
+        "background-color",
+        "red"
+      );
+      setTimeout(() => {
+        $("#last-" + userLogged.watchlist[i].symbol).css(
+          "background-color",
+          "white"
+        );
+      }, 500);
+    } else {
+      $("#last-" + userLogged.watchlist[i].symbol).css(
+        "background-color",
+        "#d6d6d8"
+      );
+      setTimeout(() => {
+        $("#last-" + userLogged.watchlist[i].symbol).css(
+          "background-color",
+          "white"
+        );
+      }, 500);
+    }
   }
 }
 
@@ -665,6 +782,168 @@ async function removeElement() {
   // this.parent.parent.parent.removeChild(this.parent.parent);
 }
 
+async function checkSessionTransaction() {
+  try {
+    const response = await fetch(
+      "https://finnhub.io/api/v1/stock/profile2?symbol=" +
+        sessionStorage.getItem("lastStock") +
+        "&token=" +
+        sessionStorage.getItem("apiKey")
+    );
+    const result = await response.text();
+    const resStatus = await response.status;
+    console.log(resStatus);
+    //console.log(result);
+    companyProfile2 = JSON.parse(result);
+  } catch (error) {
+    console.error(error);
+  }
+
+  // let imgLogo = document.getElementById("img-" + userLogged.stock[i].symbol);
+  $("#transaction-img").attr("src", companyProfile2.logo);
+  $("#symbol").text(sessionStorage.getItem("lastStock"));
+  $("#description").text(companyProfile2.name);
+
+  //Quote
+  try {
+    const response = await fetch(
+      "https://finnhub.io/api/v1/quote?symbol=" +
+        sessionStorage.getItem("lastStock") +
+        "&token=" +
+        sessionStorage.getItem("apiKey")
+    );
+    const result = await response.text();
+    const resStatus = await response.status;
+    console.log(resStatus);
+    //console.log(result);
+    quote = JSON.parse(result);
+  } catch (error) {
+    console.error(error);
+  }
+
+  $("#c").text(formatNumber("Last: " + quote.c.toFixed(2)));
+  $("#d").text(formatNumber("Change: " + quote.d.toFixed(2)));
+  $("#dp").text(formatNumber("Percent Change: " + quote.dp.toFixed(2)));
+  $("#h").text(formatNumber("High: " + quote.h.toFixed(2)));
+  $("#l").text(formatNumber("Low: " + quote.l.toFixed(2)));
+  $("#o").text(formatNumber("Open: " + quote.o.toFixed(2)));
+  $("#pc").text(formatNumber("Previous Close: " + quote.pc.toFixed(2)));
+}
+//   //pick previous last and change
+//   let previousLast = parseFloat(
+//     $("#last-" + userLogged.stock[i].symbol).text()
+//   );
+//   $("#last-" + userLogged.stock[i].symbol).text(
+//     formatNumber(quote.c.toFixed(2))
+//   );
+//   if (previousLast < parseFloat(formatNumber(quote.c.toFixed(2)))) {
+//     $("#last-" + userLogged.stock[i].symbol).css("background-color", "green");
+//     setTimeout(() => {
+//       $("#last-" + userLogged.stock[i].symbol).css(
+//         "background-color",
+//         "white"
+//       );
+//     }, 500);
+//   } else if (previousLast > parseFloat(formatNumber(quote.c.toFixed(2)))) {
+//     $("#last-" + userLogged.stock[i].symbol).css("background-color", "red");
+//     setTimeout(() => {
+//       $("#last-" + userLogged.stock[i].symbol).css(
+//         "background-color",
+//         "white"
+//       );
+//     }, 500);
+//   } else {
+//     $("#last-" + userLogged.stock[i].symbol).css(
+//       "background-color",
+//       "#d6d6d8"
+//     );
+//     setTimeout(() => {
+//       $("#last-" + userLogged.stock[i].symbol).css(
+//         "background-color",
+//         "white"
+//       );
+//     }, 500);
+//   }
+
+//   // let last = document.getElementById("last-" + userLogged.stock[i].symbol);
+//   // last.innerHTML = formatNumber(quote.c.toFixed(2));
+
+//   let change = document.getElementById(
+//     "change-" + userLogged.stock[i].symbol
+//   );
+
+//     change.innerHTML = quote.dp // .toFixed(2) + "%";
+//   if (quote.dp > 0) {
+//     change.style.color = "green";
+//   } else if (quote.dp < 0) {
+//     change.style.color = "red";
+//   }
+
+//   let value = document.getElementById("value-" + userLogged.stock[i].symbol);
+//   value.innerHTML = formatNumber(
+//     (userLogged.stock[i].qt * quote.c).toFixed(2)
+//   );
+
+// }
+
+function loadProfile() {
+  const promise = new Promise((resolve, reject) => {
+    var result = checkSessionUserLogged();
+    resolve(result);
+  });
+
+  promise.then((res) => {
+    console.log(res);
+    $("#in-username").val(res.email);
+    $("#in-name").val(res.name);
+    $("#in-username").val(res.email);
+    $("#in-username").val(res.email);
+  });
+}
+
+function changePassword() {
+  alert("to do");
+}
+function buttonClicked(element) {
+  console.log(element);
+  console.log(element.innerText);
+
+  switch (element.innerText) {
+    case "Sign In":
+      login();
+      return;
+    case "Logout":
+      logout();
+      return;
+    case "Deposit":
+      deposit();
+      return;
+    case "Withdraw":
+      withdraw();
+      return;
+    case "Chage Password":
+      changePassword();
+      return;
+    default:
+      break;
+  }
+
+  alert("to do" + element.innerText);
+}
+
+// function deposit() {
+//   if (isValidDepositWithdraw(depositWithdraw.value)) {
+//     let previousBalance = parseFloat(userLogged.cash[0].balance);
+//     userLogged.cash[0].balance = formatNumber(previousBalance + parseFloat(depositWithdraw.value.replace(",","")).toFixed(2));
+
+//     alert("Previous balance: " + formatNumber(previousBalance.toFixed(2)) + "\n" +
+//       "Deposited Value: " + depositWithdraw.value + "\n" +
+//       "New balance: " + userLogged.cash[0].balance
+//     )
+//   }
+
+// }
+
 function formatNumber(x) {
   var parts = x.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -677,6 +956,15 @@ function goPortfolio() {
 function goWatchlist() {
   window.location.href = "/watchlist.html";
 }
+
+function goTransactionWith(box) {
+  console.log("box");
+  console.log(box);
+
+  sessionStorage.setItem("lastStock", box);
+  goTransaction();
+}
+
 function goTransaction() {
   window.location.href = "/transaction.html";
 }
@@ -801,6 +1089,19 @@ function autocomplete(inp, arr) {
 }
 
 async function addWatchlist(newStockToAdd) {
+  //check if this stock is already in the watchlist
+  var isAlreadyListed = false;
+  userLogged.watchlist.forEach((stock) => {
+    if (newStockToAdd.symbol == stock.symbol) {
+      isAlreadyListed = true;
+    }
+  });
+
+  if (isAlreadyListed) {
+    alert("This stock is already listed");
+    return;
+  }
+
   JSONAddNewStock = JSON.stringify(newStockToAdd);
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -826,6 +1127,78 @@ async function addWatchlist(newStockToAdd) {
     console.error(error);
   }
 }
+
+async function deposit() {
+  valueToDeposit = parseFloat($("#in-deposit-withdraw").val().replace(",", ""));
+
+  ObjDepositRequest = {
+    session: sessionStorage.getItem("session"),
+    depositValue: valueToDeposit,
+    id: userLogged.id,
+  };
+  JSONDepositRequest = JSON.stringify(ObjDepositRequest);
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSONDepositRequest,
+    redirect: "follow",
+  };
+  const url = host + "/deposit";
+  try {
+    const response = await fetch(url, requestOptions);
+    const result = await response.text();
+    const resStatus = await response.status;
+    console.log(resStatus);
+    console.log(result);
+    if (resStatus == "500") {
+      alert("Error to deposit. Try later or contact support");
+    } else if (resStatus == "201" || resStatus == "200") {
+      alert(result);
+      location.reload();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function withdraw() {
+  valueToWithdraw = parseFloat(
+    $("#in-deposit-withdraw").val().replace(",", "")
+  );
+
+  ObjWithdrawRequest = {
+    session: sessionStorage.getItem("session"),
+    withdrawValue: valueToWithdraw,
+    id: userLogged.id,
+  };
+  JSONWithdrawRequest = JSON.stringify(ObjWithdrawRequest);
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSONWithdrawRequest,
+    redirect: "follow",
+  };
+  const url = host + "/withdraw";
+  try {
+    const response = await fetch(url, requestOptions);
+    const result = await response.text();
+    const resStatus = await response.status;
+    console.log(resStatus);
+    console.log(result);
+    if (resStatus == "500") {
+      alert(result);
+    } else if (resStatus == "201" || resStatus == "200") {
+      alert(result);
+      location.reload();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+} 
 
 var stockSymbols = [
   "A AGILENT TECHNOLOGIES INC",
@@ -1339,3 +1712,23 @@ var stockSymbols = [
 ];
 
 autocomplete(document.getElementById("inputStock"), stockSymbols);
+
+let inputStock = document.getElementById("inputStock");
+inputStock.addEventListener("keyup", (event) => {
+  if (event.isComposing || event.keyCode === 229) {
+    // return;
+  }
+  if (event.key === "Enter" || event.keyCode === 13) {
+    let newStockToAdd = {
+      symbol: this.document
+        .getElementById("inputStock")
+        .value.split(" ")[0]
+        .toUpperCase(),
+    };
+    addWatchlist(newStockToAdd);
+
+    /*close the list of autocompleted values,
+          (or any other open lists of autocompleted values:*/
+    closeAllLists();
+  }
+});
