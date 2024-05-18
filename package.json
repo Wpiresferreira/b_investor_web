@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "express": "^4.19.2",
-    "finnhub": "^1.2.18"
+    "finnhub": "^1.2.18",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6"
   }
 }

@@ -1,1 +1,46 @@
-[{"name":"Wagner","email":"wagpires@yahoo.com","cash":[{"currency":"USD","balance":"100000.00"}],"stock":[{"symbol":"MCD","qt":1},{"symbol":"PBR","qt":2},{"symbol":"V","qt":3},{"symbol":"MSFT","qt":4},{"symbol":"KO","qt":5}],"watchlist":[{"symbol":"MCD"},{"symbol":"KO"},{"symbol":"AXP"}],"id":2000}]
+[
+    {
+        "name": "Wagner",
+        "email": "wagpires@yahoo.com",
+        "cash": [
+            {
+                "currency": "USD",
+                "balance": "100000.00"
+            }
+        ],
+        "stock": [
+            {
+                "symbol": "MCD",
+                "qt": 1
+            },
+            {
+                "symbol": "PBR",
+                "qt": 2
+            },
+            {
+                "symbol": "V",
+                "qt": 3
+            },
+            {
+                "symbol": "MSFT",
+                "qt": 4
+            },
+            {
+                "symbol": "KO",
+                "qt": 5
+            }
+        ],
+        "watchlist": [
+            {
+                "symbol": "MCD"
+            },
+            {
+                "symbol": "KO"
+            },
+            {
+                "symbol": "AXP"
+            }
+        ],
+        "id": 2000
+    }
+]
