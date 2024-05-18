@@ -19,7 +19,7 @@
     <title>B Investor</title>
   </head>
 
-  <body onload="checkSession()">
+  <body onload="checkSessionTransaction()">
     <header class="header-signup">
       <img src="b_investor_logo2.png" alt="" srcset="" />
       <div class="in-tittle-signup">
@@ -27,10 +27,38 @@
       </div>
     </header>
     <main id="myRecyclerView">
-      <div class="container-portfolio">
+      <!-- <div class="container-portfolio">
         <i class="fa fa-briefcase img-cash"></i>
         <div id="tittle-total">Total</div>
         <div id="data-total">Loading...</div>
+      </div> -->
+      <div class="autocomplete container-portfolio">
+        <input id="inputStock" type="text" name="inputStock" placeholder="Enter a Stock Symbol">
+      <i class="fa fa-search"></i>
+      </div>
+      <div id="details-container">
+        <div id="container-image">
+          <img src="b_investor_logo2.png" id="transaction-img" aria-placeholder="b_investor_logo2">
+        </div>
+        <div id="symbol">c</div>
+        <div id="description">c</div>
+        <div id="c">c</div>
+        <div id="d">c</div>
+        <div id="dp">c</div>
+        <div id="h">c</div>
+        <div id="l">c</div>
+        <div id="o">c</div>
+        <div id="pc">c</div>
+        
+        <div id="detais-rigth"></div>
+      </div>
+      <div id="container-qt">
+        <label for="qt">Qt</div>
+        <input type="number" step="1" name="qt"></div>
+      </div>
+      <div id="container-buttons">
+        <button>Buy</button>
+        <button>Sell</button>
       </div>
       <!-- <div class="container-portfolio">
         <i class="fa fa-dollar img-cash"></i>

@@ -46,8 +46,10 @@
       <div id="in-message"></div>
       <input type="checkbox" name="remember-me" id="in-checkbox" />
       <label id="label-in-checkbox" for="remember-me">Remember-me</label>
-      <button type="button" id="in-button" onclick="login()">Sign In</button>
-      <div id="in-go-signup" onclick="goSignup()">
+      <div class="container-buttons">
+        <button type="button" class="in-button" onclick="buttonClicked(this)">Sign In</button>
+      </div>
+        <div id="in-go-signup" onclick="goSignup()">
         <div>Don't have an account? </div>
         <div id="in-signup-link">Sign up</div>
       </div>

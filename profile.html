@@ -3,6 +3,7 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="/script.js" defer></script>
+    <script src="/util-profile.js" defer></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -19,47 +20,59 @@
     <title>B Investor</title>
   </head>
 
-  <body onload="checkSession()">
+  <body onload="loadProfile()">
     <header class="header-signup">
       <img src="b_investor_logo2.png" alt="" srcset="" />
       <div class="in-tittle-signup">
         <h1>Profile</h1>
       </div>
     </header>
-    <main id="myRecyclerView">
-      <div class="container-portfolio">
-        <i class="fa fa-briefcase img-cash"></i>
-        <div id="tittle-total">Total</div>
-        <div id="data-total">Loading...</div>
+    <main id="main-container">
+      <div class="in-box">
+        <input type="email" name="in-username" class="in-general" id="in-username" disabled/>
+        <label for="in-username" id="label-in-username">Email / Username</label>
+        <i class="fa in-validation" id="in-username-validation"></i>
       </div>
-      <!-- <div class="container-portfolio">
-        <i class="fa fa-dollar img-cash"></i>
-        <div class="cash-left">Cash</div>
-        <div class="cash-center">Cash</div>
-        <div class="cash-right">Loading...</div>
+      <div class="in-box">
+        <input type="text" name="in-name" class="in-general" id="in-name" disabled/>
+        <label for="in-name" class="label-in-general" id="label-in-name">Name</label>
+        <i class="fa in-validation" id="in-name-validation"></i>
       </div>
-      <div class="container-portfolio">
-        <img
-          class="img-stock"
-          src="https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AAPL.png"
-          alt=""
-          srcset=""
-          id="AAPLImg"
-        />
-        <div class="stock-left">
-          <div class="symbol" id="AAPLSymbol">AAPL</div>
-          <div class="description" id="AAPLDescription">Apple Inc</div>
-        </div>
-        <div class="stock-center">
-          <div class="value">2,675.05</div>
-          <div class="share" id="AAPLShare">10</div>
-        </div>
-        <div class="stock-right">
-          <div class="last">267.50</div>
-          <div class="change">0.00%</div>
-        </div>
-      </div> -->
+      <div class="in-box">
+        <input type="text" name="in-deposit-withdraw" class="in-general" id="in-deposit-withdraw" />
+        <label for="in-deposit-withdraw" class="label-in-general" id="label-in-deposit-withdraw">Value (Deposit / Withdraw)</label>
+        <i class="fa in-validation" id="in-deposit-withdraw-validation"></i>
+      </div>
+      <div class="container-buttons">
+        <button type="button" class="button-half" onclick="buttonClicked(this)">Deposit</button>
+        <button type="button" class="button-half" onclick="buttonClicked(this)">Withdraw</button>
+      </div>
+      <div class="in-box">
+        <input type="password" name="in-password" id="in-password" />
+        <label for="in-password" class="label-in-general" id="label-in-password">Password</label>
+        <i class="fa in-validation" id="in-password-validation"></i>
+        <i
+          class="fa fa-eye-slash icon-visibility"
+          id="in-password-visibility"
+          onclick="toggleVisibility(this)"
+        ></i>
+      </div>
 
+      <div class="in-box">
+        <input type="password"class="in-general" name="in-retype-password" id="in-retype-password" />
+        <label for="in-retype-password" class="label-in-general" id="label-in-retype-password">Retype Password</label>
+        <i class="fa in-validation" id="in-retype-password-validation"></i>
+        <i
+          class="fa fa-eye-slash icon-visibility"
+          id="in-retype-password-visibility"
+          onclick="toggleVisibility(this)"
+        ></i>
+      </div>
+      
+      <div class="container-buttons">
+        <button type="button" class="in-button" onclick="buttonClicked(this)">Change Password</button>
+        <button type="button" class="in-button" onclick="buttonClicked(this)">Logout</button>
+      </div>
     </main>
     <div><br /><br /><br /><br /><br /></div>
     <footer>

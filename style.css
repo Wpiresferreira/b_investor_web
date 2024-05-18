@@ -3,6 +3,7 @@
   --primary-dark: #3c5b8a;
   --primary-light: #dcedff;
   --secondary: #8f91a2;
+  --secondary: #d6d6d8;
   --color3: #505a5b;
   --color4: #343f3e;
   --color5: ##e05858;
@@ -236,6 +237,8 @@ main {
   border: none;
   border-radius: 8px;
 }
+
+
 button:hover {
   color: #ffffffff;
   background: var(--primary);
@@ -267,16 +270,11 @@ button:hover {
   color: var(--primary-dark);
 }
 
-
-
-.description{
+.description {
   white-space: nowrap;
   font-size: small;
   overflow: hidden;
 }
-
-
-
 
 footer {
   position: fixed;
@@ -310,12 +308,6 @@ footer > * {
   margin-top: 10px;
   color: var(--primary-dark);
 }
-
-
-
-
-
-
 
 @media only screen and (max-width: 600px) {
   body {
@@ -526,17 +518,35 @@ footer > * {
     font-size: medium;
     font-weight: 600;
   }
-
-  #in-button {
+  .container-buttons{
     margin-top: 12px;
     margin-left: 10vw;
+    position: relative;
+    width: 80vw;
+    height: 8vh;  
+  }
+  .button-half {
+    width: 39vw;
+    height: 8vh;  
+    padding: 0 20px;
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--primary-dark);
+    opacity: 1;
+    border: none;
+    border-radius: 8px;
+  }
+  
+  .in-button {
     position: relative;
     width: 80vw;
     height: 8vh;
     padding: 0 20px;
     font-size: 18px;
     line-height: 28px;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--white);
     background: var(--primary-dark);
     opacity: 1;
@@ -636,6 +646,12 @@ footer > * {
     position: relative;
     display: inline-block;
   }
+  #inputStock {
+    height: 45px;
+    outline: none;
+    border: none;
+    width: 80vw;
+  }
 
   footer {
     position: fixed;
@@ -668,5 +684,48 @@ footer > * {
     text-align: center;
     margin-top: 10px;
     color: var(--primary-dark);
+  }
+
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }
+
+  /*when hovering an item:*/
+  .autocomplete-items div:hover {
+    background-color: #e9e9e9;
+  }
+
+  /*when navigating through the items using the arrow keys:*/
+  .autocomplete-active {
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+  }
+
+  #container-image {
+    margin-left:  35vw;
+    width: 30vw;
+    height: auto;
+    
+  }
+
+  #transaction-img{
+    width: 100%;
+    border-radius: 8px;
+
   }
 }
