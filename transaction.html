@@ -26,39 +26,45 @@
         <h1>Transaction</h1>
       </div>
     </header>
+    <!-- <div class="container-portfolio">
+      <i class="fa fa-briefcase img-cash"></i>
+      <div id="tittle-total">Total</div>
+      <div id="data-total">Loading...</div>
+    </div> -->
     <main id="myRecyclerView">
-      <!-- <div class="container-portfolio">
-        <i class="fa fa-briefcase img-cash"></i>
-        <div id="tittle-total">Total</div>
-        <div id="data-total">Loading...</div>
-      </div> -->
-      <div class="autocomplete container-portfolio">
-        <input id="inputStock" type="text" name="inputStock" placeholder="Enter a Stock Symbol">
+    <div class="autocomplete container-portfolio">
+      <input class="inputStock" id="inputStockTransaction" type="text" name="inputStock" placeholder="Enter a Stock Symbol">
       <i class="fa fa-search"></i>
+    </div>
+    <div class="details-grid-container">
+      <div class="last-stock" id="symbol">c</div>
+      <div class="item-image" id="container-image">
+        <img src="b_investor_logo2.png" id="transaction-img" aria-placeholder="b_investor_logo2">
       </div>
-      <div id="details-container">
-        <div id="container-image">
-          <img src="b_investor_logo2.png" id="transaction-img" aria-placeholder="b_investor_logo2">
-        </div>
-        <div id="symbol">c</div>
-        <div id="description">c</div>
-        <div id="c">c</div>
-        <div id="d">c</div>
-        <div id="dp">c</div>
-        <div id="h">c</div>
-        <div id="l">c</div>
-        <div id="o">c</div>
-        <div id="pc">c</div>
+      <div class="item-last" id="c">c</div>
+      <div class="item-change" id="dp">c</div>
+      <div class="iteml-label" >Prev Close</div>
+      <div class="iteml" id="pc">c</div>
+      <div class="itemr-label">Change</div>
+      <div class="itemr" id="d">c</div>
+      <div class="iteml-label">High</div>
+      <div class="iteml" id="h">c</div>
+      <div class="itemr-label" >Open</div>
+      <div class="itemr" id="o">c</div>
+        <div class="iteml-label">Low</div>
+        <div class="iteml" id="l">c</div>
+        <!-- <div class="itemr-label" ></div>
+        <div class="itemr"></div> -->
         
-        <div id="detais-rigth"></div>
       </div>
-      <div id="container-qt">
-        <label for="qt">Qt</div>
-        <input type="number" step="1" name="qt"></div>
+      <div class="in-box">
+        <input type="number" step="1" value="1" min="1" name="qt" class="in-general" id="in-quantity" />
+        <label for="qt" class="label-in-general" id="label-in-initial-cash">Quantity</label>
       </div>
-      <div id="container-buttons">
-        <button>Buy</button>
-        <button>Sell</button>
+      
+      <div class="container-buttons">
+        <button type="button" class="button-half" onclick="buttonClicked(this)">Buy</button>
+        <button type="button" class="button-half" onclick="buttonClicked(this)">Sell</button>
       </div>
       <!-- <div class="container-portfolio">
         <i class="fa fa-dollar img-cash"></i>

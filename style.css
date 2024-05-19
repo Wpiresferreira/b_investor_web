@@ -1,12 +1,13 @@
 :root {
   --primary: #94b0da;
   --primary-dark: #3c5b8a;
+  /* --primary-dark: #3c5b8a; */
   --primary-light: #dcedff;
   --secondary: #8f91a2;
   --secondary: #d6d6d8;
   --color3: #505a5b;
   --color4: #343f3e;
-  --color5: ##e05858;
+  --color5: #e05858;
   --neutral900: #171a1fff;
   --neutral550: #6f7787ff;
   --neutral500: #9095a1ff;
@@ -221,9 +222,11 @@ main {
   font-weight: 600;
 }
 
-#in-button {
+#in-quantity {
+  text-align: center;
+}
+.in-button {
   margin-top: 12px;
-  margin-left: 10vw;
   position: relative;
   width: 45vw;
   height: 15vh;
@@ -237,7 +240,6 @@ main {
   border: none;
   border-radius: 8px;
 }
-
 
 button:hover {
   color: #ffffffff;
@@ -518,16 +520,16 @@ footer > * {
     font-size: medium;
     font-weight: 600;
   }
-  .container-buttons{
+  .container-buttons {
     margin-top: 12px;
     margin-left: 10vw;
     position: relative;
     width: 80vw;
-    height: 8vh;  
+    height: 8vh;
   }
   .button-half {
     width: 39vw;
-    height: 8vh;  
+    height: 8vh;
     padding: 0 20px;
     font-size: 18px;
     line-height: 28px;
@@ -538,7 +540,7 @@ footer > * {
     border: none;
     border-radius: 8px;
   }
-  
+
   .in-button {
     position: relative;
     width: 80vw;
@@ -593,7 +595,7 @@ footer > * {
   }
 
   .img-cash {
-    color: var(--color5);
+    color: var(--primary-dark);
     width: 12vw;
     vertical-align: middle;
     text-align: center;
@@ -646,7 +648,7 @@ footer > * {
     position: relative;
     display: inline-block;
   }
-  #inputStock {
+  .inputStock {
     height: 45px;
     outline: none;
     border: none;
@@ -697,6 +699,19 @@ footer > * {
     left: 0;
     right: 0;
   }
+  .last-stock {
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    grid-column-start: 1;
+    grid-column-end: 5;
+    padding: 2vw;
+    margin-top: 2vw;
+    border-radius: 4px;
+    font-weight: 600;
+  }
 
   .autocomplete-items div {
     padding: 10px;
@@ -716,16 +731,99 @@ footer > * {
     color: #ffffff;
   }
 
-  #container-image {
-    margin-left:  35vw;
+  .vw30 {
+    margin-left: 25vw;
     width: 30vw;
     height: auto;
-    
   }
 
-  #transaction-img{
+  #transaction-img {
     width: 100%;
     border-radius: 8px;
+  }
 
+  .details-grid-container {
+    display: grid;
+    width: 80vw;
+    grid-template-columns: 24vw 16vw 24vw 16vw;
+    margin-left: 10vw;
+    align-items: center;
+    column-gap: 0;
+    row-gap: 2vw;
+  }
+  .item-image {
+    width: 38vw;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 4;
+  }
+  .item-last {
+    width: 38vw;
+    height: 18vw;
+    text-align: right;
+    background-color: white;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: xx-large;
+    padding-right: 2vw;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    line-height: 18vw;
+  }
+  .item-change {
+    width: 38vw;
+    height: 18vw;
+    line-height: 18vw;
+    text-align: right;
+    color: white;
+    font-weight: bold;
+    font-size: xx-large;
+    padding-right: 2vw;
+
+    background-color: green;
+    border-radius: 4px;
+    grid-column-start: 3;
+    grid-column-end: 4;
+  }
+  .itemc {
+    grid-column-start: 1;
+    grid-column-end: 4;
+  }
+  .iteml-label {
+    grid-column: 1;
+    font-size: small;
+    font-weight: 600;
+    background-color: var(--white);
+    border-radius: 3px 0 0 3px;
+    padding: 2vw;
+  }
+  .iteml {
+    grid-column: 2;
+    text-align: right;
+    font-size: small;
+    font-weight: 600;
+    background-color: var(--white);
+    border-radius: 0 3px 3px 0;
+    padding: 2vw;
+    margin-right: 1vw;
+  }
+  .itemr-label {
+    grid-column: 3;
+    font-size: small;
+    font-weight: 600;
+    background-color: var(--white);
+    border-radius: 3px 0 0 3px;
+    padding: 2vw;
+    margin-left: 1vw;
+  }
+  .itemr {
+    grid-column: 4;
+    text-align: right;
+    font-size: small;
+    font-weight: 600;
+    background-color: var(--white);
+    border-radius: 0 3px 3px 0;
+    padding: 2vw;
   }
 }
