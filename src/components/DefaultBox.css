@@ -1,0 +1,64 @@
+:root {
+  --first: #d9dcd6;
+  --secondy: #3a7ca5;
+  --third: #2f6690;
+  --fourth: #81c3d7;
+  --fifth: #16425b;
+}
+*{
+    color: var(--fifth);
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+.DefaultBox {
+  display: block;
+  width: 80%;
+  max-width: 500px;
+  height: 60px;
+  background-color: var(--first);
+  border-radius: 6px;
+  margin: 10px auto;
+}
+
+.Label {
+  position: absolute;
+  margin: 6px;
+  color: var(--third);
+  font-size: x-large;
+  /* animation: reSizeFont 3s; */
+}
+
+.InputBox {
+  position: absolute;
+  color: var(--third);
+  width: 80%;
+  max-width: 500px;
+  height: 60px;
+  font-size: large;
+  padding-top: 12px;
+  padding-left: 18px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+@keyframes reSizeFont {
+  from {
+    font-size: x-large;
+  }
+  to {
+    font-size: medium;
+  }
+}
+@keyframes reSizeFontInvert {
+  from {
+    font-size: medium;
+  }
+  to {
+    font-size: x-large;
+  }
+}

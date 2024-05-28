@@ -1,13 +1,29 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root {
+  --primary: #94b0da;
+  --primary-dark: #3c5b8a;
+  /* --primary-dark: #3c5b8a; */
+  --primary-light: #dcedff;
+  --secondary: #8f91a2;
+  --secondary: #d6d6d8;
+  --color3: #505a5b;
+  --color4: #343f3e;
+  --color5: #e05858;
+  --neutral900: #171a1fff;
+  --neutral550: #6f7787ff;
+  --neutral500: #9095a1ff;
+  --white: #ffffffff;
+  --error: #de3b40;
+  --defaultFont: "Asap", sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  font-family: var(--defaultFont);
+  color: var(--color4);
+  margin: 0;
+  padding: 0;
+  
 }
+
