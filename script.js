@@ -3,11 +3,12 @@ let checkedSession = false;
 let actualSessionID = null;
 
 let host = "http://137.186.165.104:3000";
-//host = "http://localhost:3000";
+host = "http://localhost:3000";
+//host = "http://192.168.1.78:3000";
 var api_key;
 
 async function getKey() {
-  console.log("function getKey called");
+  ////console.log("function getKey called");
 
   sessionObj = { sessionID: sessionStorage.getItem("session") };
   sessionJSON = JSON.stringify(sessionObj);
@@ -29,13 +30,14 @@ async function getKey() {
     if (resStatus == "500") {
       //message.innerText = "Invalid Session - Error to get API key";
     } else if (resStatus == "201" || resStatus == "200") {
-      console.log("result");
-      console.log(result);
-      console.log(resStatus);
+      ////console.log("result");
+      ////console.log(result);
+      ////console.log(resStatus);
       resultObj = JSON.parse(result);
+      //alert(result)
       sessionStorage.setItem("apiKey", resultObj.api_key);
-      console.log("sessionStorage.getItem('apiKey')");
-      console.log(sessionStorage.getItem("apiKey"));
+      ////console.log("sessionStorage.getItem('apiKey')");
+      ////console.log(sessionStorage.getItem("apiKey"));
       api_key = sessionStorage.getItem("apiKey");
       goPortfolio();
       //updateLogin()
@@ -77,8 +79,8 @@ async function login() {
     const response = await fetch("https://api.ipify.org/?format=json");
     const result = await response.text();
     const resStatus = await response.status;
-    console.log(resStatus);
-    //console.log(result);
+    ////console.log(resStatus);
+    //////console.log(result);
     objIp = JSON.parse(result);
   } catch (error) {
     console.error(error);
@@ -106,16 +108,15 @@ async function login() {
     if (resStatus == "500") {
       message.innerText = "Incorrect Credentials";
     } else if (resStatus == "201" || resStatus == "200") {
-      console.log(result);
-      console.log(resStatus);
+      //alert(result);
+      ////console.log(resStatus);
       resultObj = JSON.parse(result);
       sessionStorage.setItem("session", resultObj.sessionID);
-      console.log("sessionStorage.getItem('session')");
-      console.log(sessionStorage.getItem("session"));
+      ////console.log("sessionStorage.getItem('session')");
+      ////console.log(sessionStorage.getItem("session"));
       api_key = getKey();
-      //goPortfolio();
+      goPortfolio();
       //updateLogin()
-      //listProperties('all')
     }
   } catch (error) {
     console.error(error);
@@ -143,8 +144,8 @@ async function signup() {
     const response = await fetch("https://api.ipify.org/?format=json");
     const result = await response.text();
     const resStatus = await response.status;
-    console.log(resStatus);
-    //console.log(result);
+    ////console.log(resStatus);
+    //////console.log(result);
     objIp = JSON.parse(result);
   } catch (error) {
     console.error(error);
@@ -165,7 +166,7 @@ async function signup() {
     ip: objIp.ip,
     dateCreation: Date.now(),
   };
-  console.log(newUser);
+  ////console.log(newUser);
 
   // objLogin = {
   //   username: username.value,
@@ -190,16 +191,16 @@ async function signup() {
     if (resStatus == "500") {
       alert("Signup Error");
     } else if (resStatus == "201" || resStatus == "200") {
-      console.log(result);
-      console.log(resStatus);
+      ////console.log(result);
+      ////console.log(resStatus);
       // resultObj = JSON.parse(result);
       // sessionStorage.setItem("session", resultObj.sessionID);
-      // console.log(sessionStorage.getItem("session"));
+      // ////console.log(sessionStorage.getItem("session"));
       // goPortfolio();
       //updateLogin()
       //listProperties('all')
       localStorage.setItem("userSaved", username.value);
-      console.log("userSaved: " + username.value);
+      ////console.log("userSaved: " + username.value);
 
       username.value = "";
       name.value = "";
@@ -252,6 +253,7 @@ async function checkSession() {
     body: sessionJSON,
     redirect: "follow",
   };
+
   const url = host + "/getUser";
   try {
     const response = await fetch(url, requestOptions);
@@ -259,20 +261,23 @@ async function checkSession() {
     const resStatus = await response.status;
     if (resStatus == "500") {
     } else if (resStatus == "201" || resStatus == "200") {
-      console.log("Session checked sucessful");
+      ////console.log("Session checked sucessful");
       resultObj = JSON.parse(result);
       userLogged = resultObj;
     }
   } catch (error) {
     console.error(error);
   }
-
-  if (userLogged == null) {
-    alert("Invalid Session");
-    window.location.href = "/index.html";
-  }
+  await alert(userLogged);
+  // if (userLogged == null) {
+  //   alert("Invalid Session");
+  //   window.location.href = "/index.html";
+  // }
   //welcome.innerHTML = "Welcome, " + userLogged.name;
+  mountScreen();
+}
 
+function mountScreen() {
   let myRecyclerView = document.getElementById("myRecyclerView");
   for (let i = 0; i < userLogged.cash.length; i++) {
     let box = document.createElement("div");
@@ -309,6 +314,7 @@ async function checkSession() {
     let img = document.createElement("img");
     img.className = "img-stock";
     img.src = "b_investor_logo2.png";
+
     img.id = "img-" + userLogged.stock[i].symbol;
 
     let stockLeft = document.createElement("div");
@@ -374,49 +380,55 @@ async function checkSession() {
 
     updateQuote();
 
-    let promise = new Promise((resolve, reject) => {
-      let count = 0;
-      let intervalID = setInterval(() => {
-        count++;
-        updateQuote();
-        if (count > 100) {
-          clearInterval(intervalID);
-          resolve();
-        }
-      }, 3000);
-    });
-
     // setInterval(await updateQuote(), 1000);
   }
+  let promise = new Promise((resolve, reject) => {
+    let count = 0;
+    let intervalID = setInterval(() => {
+      count++;
+      updateQuote();
+      if (count > 100) {
+        clearInterval(intervalID);
+        resolve();
+      }
+    }, 3000);
+  });
 }
 
 async function updateDescription() {
   for (let i = 0; i < userLogged.stock.length; i++) {
-    console.log(api_key);
+    ////console.log(api_key);
     //Company profile2
-    try {
-      const response = await fetch(
-        "https://finnhub.io/api/v1/stock/profile2?symbol=" +
-          userLogged.stock[i].symbol +
-          "&token=" +
-          sessionStorage.getItem("apiKey")
+    let myPromise = new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(
+          "https://finnhub.io/api/v1/stock/profile2?symbol=" +
+            userLogged.stock[i].symbol +
+            "&token=" +
+            sessionStorage.getItem("apiKey")
+        );
+        const result = await response.text();
+        const resStatus = await response.status;
+        ////console.log(resStatus);
+        //////console.log(result);
+        companyProfile2 = JSON.parse(result);
+      } catch (error) {
+        console.error(error);
+      }
+      resolve(companyProfile2);
+    });
+
+    myPromise.then((companyProfile2) => {
+      let imgLogo = document.getElementById(
+        "img-" + userLogged.stock[i].symbol
       );
-      const result = await response.text();
-      const resStatus = await response.status;
-      console.log(resStatus);
-      //console.log(result);
-      companyProfile2 = JSON.parse(result);
-    } catch (error) {
-      console.error(error);
-    }
+      imgLogo.src = companyProfile2.logo;
 
-    let imgLogo = document.getElementById("img-" + userLogged.stock[i].symbol);
-    imgLogo.src = companyProfile2.logo;
-
-    let stockDescription = document.getElementById(
-      "description-" + userLogged.stock[i].symbol
-    );
-    stockDescription.innerHTML = companyProfile2.name;
+      let stockDescription = document.getElementById(
+        "description-" + userLogged.stock[i].symbol
+      );
+      stockDescription.innerHTML = companyProfile2.name;
+    });
   }
 }
 async function updateQuote() {
@@ -432,14 +444,15 @@ async function updateQuote() {
       );
       const result = await response.text();
       const resStatus = await response.status;
-      console.log(resStatus);
-      //console.log(result);
+      ////console.log(resStatus);
+      //////console.log(result);
       quote = JSON.parse(result);
     } catch (error) {
       console.error(error);
     }
 
     //pick previous last and change
+
     let previousLast = parseFloat(
       $("#last-" + userLogged.stock[i].symbol).text()
     );
@@ -494,16 +507,21 @@ async function updateQuote() {
       (userLogged.stock[i].qt * quote.c).toFixed(2)
     );
 
-    console.log("lastPrevious");
-    console.log(previousLast);
+    ////console.log("lastPrevious");
+    ////console.log(previousLast);
   }
   updateTotal();
 }
 
 function updateTotal() {
+  ////console.log('updateTotal called');
   let total = 0;
 
   total += parseFloat(userLogged.cash[0].balance);
+  ////console.log(total);
+  let totalElement = document.getElementById("data-total");
+  totalElement.innerHTML = formatNumber(parseFloat(total).toFixed(2));
+
   for (let i = 0; i < userLogged.stock.length; i++) {
     let valueElement = document.getElementById(
       "value-" + userLogged.stock[i].symbol
@@ -512,7 +530,6 @@ function updateTotal() {
     total += valueNumber;
   }
 
-  let totalElement = document.getElementById("data-total");
   totalElement.innerHTML = formatNumber(parseFloat(total).toFixed(2));
 }
 
@@ -548,10 +565,10 @@ async function checkSessionWatch() {
     console.error(error);
   }
 
-  if (userLogged == null) {
-    alert("Invalid Session");
-    window.location.href = "/index.html";
-  }
+  // if (userLogged == null) {
+  //   alert("Invalid Session");
+  //   window.location.href = "/index.html";
+  // }
   // welcome.innerHTML = "Welcome, " + userLogged.name;
 
   let myRecyclerView = document.getElementById("myRecyclerView");
@@ -613,6 +630,10 @@ async function checkSessionWatch() {
     box.appendChild(stockCenter);
     box.appendChild(stockRight);
     myRecyclerView.appendChild(box);
+
+    box.addEventListener("click", function () {
+      goTransactionWith(userLogged.stock[i].symbol);
+    });
   }
 
   checkedSession = true;
@@ -645,8 +666,8 @@ async function updateDescriptionWatchlist() {
       );
       const result = await response.text();
       const resStatus = await response.status;
-      console.log(resStatus);
-      //console.log(result);
+      ////console.log(resStatus);
+      //////console.log(result);
       companyProfile2 = JSON.parse(result);
     } catch (error) {
       console.error(error);
@@ -675,8 +696,8 @@ async function updateQuoteWatchlist() {
       );
       const result = await response.text();
       const resStatus = await response.status;
-      console.log(resStatus);
-      //console.log(result);
+      ////console.log(resStatus);
+      //////console.log(result);
       quote = JSON.parse(result);
     } catch (error) {
       console.error(error);
@@ -740,9 +761,9 @@ async function updateQuoteWatchlist() {
 }
 
 async function removeElement() {
-  console.log(this.id.split("-")[1]);
+  ////console.log(this.id.split("-")[1]);
 
-  console.log(userLogged.watchlist);
+  ////console.log(userLogged.watchlist);
   let itemtoremove = { symbol: this.id.split("-")[1] };
 
   JSONRemoveStock = JSON.stringify(itemtoremove);
@@ -759,8 +780,8 @@ async function removeElement() {
     const response = await fetch(url, requestOptions);
     const result = await response.text();
     const resStatus = await response.status;
-    console.log(resStatus);
-    //console.log(result);
+    ////console.log(resStatus);
+    //////console.log(result);
     if (resStatus == "500") {
       alert("Error to remove to watchlist");
     } else if (resStatus == "201") {
@@ -770,15 +791,15 @@ async function removeElement() {
     console.error(error);
   }
 
-  // console.log(itemtoremove);
-  // console.log("Index");
+  // ////console.log(itemtoremove);
+  // ////console.log("Index");
 
-  // console.log(indexToRemove);
+  // ////console.log(indexToRemove);
 
   // if (indexToRemove >= 0) {
   //   userLogged.watchlist.splice(indexToRemove, 1);
   // }
-  // console.log(userLogged.watchlist);
+  // ////console.log(userLogged.watchlist);
   // this.parent.parent.parent.removeChild(this.parent.parent);
 }
 
@@ -792,8 +813,8 @@ async function checkSessionTransaction() {
     );
     const result = await response.text();
     const resStatus = await response.status;
-    console.log(resStatus);
-    //console.log(result);
+    ////console.log(resStatus);
+    //////console.log(result);
     companyProfile2 = JSON.parse(result);
   } catch (error) {
     console.error(error);
@@ -815,8 +836,8 @@ async function checkSessionTransaction() {
     );
     const result = await response.text();
     const resStatus = await response.status;
-    console.log(resStatus);
-    //console.log(result);
+    ////console.log(resStatus);
+    //////console.log(result);
     quote = JSON.parse(result);
   } catch (error) {
     console.error(error);
@@ -824,14 +845,14 @@ async function checkSessionTransaction() {
 
   $("#c").text(formatNumber(quote.c.toFixed(2)));
   $("#d").text(formatNumber(quote.d.toFixed(2)));
-  $("#dp").text(formatNumber(quote.dp.toFixed(2))+ "%");
-if(quote.dp>0){
-  $("#dp").css("background-color", "green");
-}else if(quote.dp<0){
-  $("#dp").css("background-color", "red") 
-}else{
-  $("#dp").css("background-color", "green") 
-}
+  $("#dp").text(formatNumber(quote.dp.toFixed(2)) + "%");
+  if (quote.dp > 0) {
+    $("#dp").css("background-color", "green");
+  } else if (quote.dp < 0) {
+    $("#dp").css("background-color", "red");
+  } else {
+    $("#dp").css("background-color", "green");
+  }
 
   $("#h").text(formatNumber(quote.h.toFixed(2)));
   $("#l").text(formatNumber(quote.l.toFixed(2)));
@@ -902,7 +923,7 @@ function loadProfile() {
   });
 
   promise.then((res) => {
-    console.log(res);
+    ////console.log(res);
     $("#in-username").val(res.email);
     $("#in-name").val(res.name);
     $("#in-username").val(res.email);
@@ -914,8 +935,8 @@ function changePassword() {
   alert("to do");
 }
 function buttonClicked(element) {
-  console.log(element);
-  console.log(element.innerText);
+  ////console.log(element);
+  ////console.log(element.innerText);
 
   switch (element.innerText) {
     case "Sign In":
@@ -937,13 +958,115 @@ function buttonClicked(element) {
       buy();
       return;
     case "Sell":
-      Sell();
+      sell();
       return;
     default:
       break;
   }
 
-  alert("to do" + element.innerText);
+  //alert("to do" + element.innerText);
+}
+
+async function buy() {
+  let stockSymbol = $("#symbol").text().split(" ")[0];
+  let qt = parseFloat($("#in-quantity").val());
+  let last = parseFloat($("#c").text());
+  let totalOrder = last * qt;
+  totalOrder = parseFloat((last * qt).toFixed(2));
+  // totalOrder = parseFloat(formatNumber(last * qt).toFixed(2).replace(',', ''));
+  ////console.log("stock");
+  ////console.log(stockSymbol);
+  ////console.log("qt");
+  ////console.log(qt);
+  ////console.log("last");
+  ////console.log(last);
+  //console.log("totalOrder");
+  //console.log(totalOrder);
+
+  ObjBuyRequest = {
+    session: sessionStorage.getItem("session"),
+    transaction: "buy",
+    stockSymbol: stockSymbol,
+    qt: qt,
+    last: last,
+    totalOrder: totalOrder,
+  };
+  JSONBuyRequest = JSON.stringify(ObjBuyRequest);
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSONBuyRequest,
+    redirect: "follow",
+  };
+  const url = host + "/transaction";
+  try {
+    const response = await fetch(url, requestOptions);
+    const result = await response.text();
+    const resStatus = await response.status;
+    //console.log(resStatus);
+    //console.log(result);
+    if (resStatus == "500") {
+      alert("Error making a transaction.");
+    } else if (resStatus == "201" || resStatus == "200") {
+      //alert(result);
+      goPortfolio();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function sell() {
+  let stockSymbol = $("#symbol").text().split(" ")[0];
+  let qt = parseFloat($("#in-quantity").val());
+  let last = parseFloat($("#c").text());
+  let totalOrder = last * qt;
+  totalOrder = parseFloat((last * qt).toFixed(2));
+  // totalOrder = parseFloat(formatNumber(last * qt).toFixed(2).replace(',', ''));
+  //console.log("stock");
+  //console.log(stockSymbol);
+  //console.log("qt");
+  //console.log(qt);
+  //console.log("last");
+  //console.log(last);
+  //console.log("totalOrder");
+  //console.log(totalOrder);
+
+  ObjSellRequest = {
+    session: sessionStorage.getItem("session"),
+    transaction: "sell",
+    stockSymbol: stockSymbol,
+    qt: qt,
+    last: last,
+    totalOrder: totalOrder,
+  };
+  JSONSellRequest = JSON.stringify(ObjSellRequest);
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSONSellRequest,
+    redirect: "follow",
+  };
+  const url = host + "/transaction";
+  try {
+    const response = await fetch(url, requestOptions);
+    const result = await response.text();
+    const resStatus = await response.status;
+    //console.log(resStatus);
+    //console.log(result);
+    if (resStatus == "500") {
+      alert("Error making a transaction.");
+    } else if (resStatus == "201" || resStatus == "200") {
+      // alert(result);
+      goPortfolio();
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // function deposit() {
@@ -973,8 +1096,8 @@ function goWatchlist() {
 }
 
 function goTransactionWith(box) {
-  console.log("box");
-  console.log(box);
+  //console.log("box");
+  //console.log(box);
 
   sessionStorage.setItem("lastStock", box);
   goTransaction();
@@ -995,8 +1118,9 @@ function goSignin() {
 }
 
 function autocomplete(inp, arr) {
-
-  if( inp == null){return}
+  if (inp == null) {
+    return;
+  }
   /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
   var currentFocus;
@@ -1108,6 +1232,10 @@ function autocompleteTransaction(inp, arr) {
   /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
   var currentFocus;
+
+  if (inp == null) {
+    return;
+  }
   /*execute a function when someone writes in the text field:*/
   inp.addEventListener("input", function (e) {
     var a,
@@ -1145,8 +1273,11 @@ function autocompleteTransaction(inp, arr) {
           let newStockToAdd = {
             symbol: this.getElementsByTagName("input")[0].value.split(" ")[0],
           };
-          sessionStorage.setItem("lastStock", this.getElementsByTagName("input")[0].value.split(" ")[0])
-          location.reload()
+          sessionStorage.setItem(
+            "lastStock",
+            this.getElementsByTagName("input")[0].value.split(" ")[0]
+          );
+          location.reload();
           //addWatchlist(newStockToAdd);
 
           /*close the list of autocompleted values,
@@ -1243,8 +1374,8 @@ async function addWatchlist(newStockToAdd) {
     const response = await fetch(url, requestOptions);
     const result = await response.text();
     const resStatus = await response.status;
-    console.log(resStatus);
-    //console.log(result);
+    //console.log(resStatus);
+    ////console.log(result);
     if (resStatus == "500") {
       alert("Error to add to watchlist");
     } else if (resStatus == "201") {
@@ -1277,8 +1408,8 @@ async function deposit() {
     const response = await fetch(url, requestOptions);
     const result = await response.text();
     const resStatus = await response.status;
-    console.log(resStatus);
-    console.log(result);
+    //console.log(resStatus);
+    //console.log(result);
     if (resStatus == "500") {
       alert("Error to deposit. Try later or contact support");
     } else if (resStatus == "201" || resStatus == "200") {
@@ -1314,8 +1445,8 @@ async function withdraw() {
     const response = await fetch(url, requestOptions);
     const result = await response.text();
     const resStatus = await response.status;
-    console.log(resStatus);
-    console.log(result);
+    //console.log(resStatus);
+    //console.log(result);
     if (resStatus == "500") {
       alert(result);
     } else if (resStatus == "201" || resStatus == "200") {
@@ -1840,11 +1971,13 @@ var stockSymbols = [
 
 autocomplete(document.getElementById("inputStock"), stockSymbols);
 
-autocompleteTransaction(document.getElementById("inputStockTransaction"), stockSymbols);
+autocompleteTransaction(
+  document.getElementById("inputStockTransaction"),
+  stockSymbols
+);
 
 let inputStock = document.getElementById("inputStock");
-if(inputStock != null){
-
+if (inputStock != null) {
   inputStock.addEventListener("keyup", (event) => {
     if (event.isComposing || event.keyCode === 229) {
       // return;
@@ -1852,12 +1985,12 @@ if(inputStock != null){
     if (event.key === "Enter" || event.keyCode === 13) {
       let newStockToAdd = {
         symbol: this.document
-        .getElementById("inputStock")
-        .value.split(" ")[0]
-        .toUpperCase(),
+          .getElementById("inputStock")
+          .value.split(" ")[0]
+          .toUpperCase(),
       };
       addWatchlist(newStockToAdd);
-      
+
       /*close the list of autocompleted values,
       (or any other open lists of autocompleted values:*/
       closeAllLists();
@@ -1865,31 +1998,40 @@ if(inputStock != null){
   });
 }
 
-let inputStockTransactrion = document.getElementById("inputStockTransaction");
-if(inputStockTransaction != null){
+activateAutoComplete();
+function activateAutoComplete() {
+  var inputStockTransactrion = document.getElementById("inputStockTransaction");
+alert(inputStockTransaction)
+  if (inputStockTransaction == null) {
+    return;
+  } else {
+    inputStockTransactrion.addEventListener("keyup", (event) => {
+      if (event.isComposing || event.keyCode === 229) {
+        // return;
+      }
+      if (event.key === "Enter" || event.keyCode === 13) {
+        let newStockToAdd = {
+          symbol: this.document
+            .getElementById("inputStockTransaction")
+            .value.split(" ")[0]
+            .toUpperCase(),
+        };
 
-  inputStockTransactrion.addEventListener("keyup", (event) => {
-    if (event.isComposing || event.keyCode === 229) {
-      // return;
-    }
-    if (event.key === "Enter" || event.keyCode === 13) {
-      let newStockToAdd = {
-        symbol: this.document
-        .getElementById("inputStockTransaction")
-        .value.split(" ")[0]
-        .toUpperCase(),
-      };
+        sessionStorage.setItem(
+          "lastStock",
+          document
+            .getElementsByTagName("input")[0]
+            .value.split(" ")[0]
+            .toUpperCase()
+        );
+        location.reload();
+        // sessionStorage.setItem("lastStock", newStockToAdd);
+        // location.reload();
 
-      sessionStorage.setItem("lastStock", document.getElementsByTagName("input")[0].value.split(" ")[0].toUpperCase())
-          location.reload();
-      // sessionStorage.setItem("lastStock", newStockToAdd);
-      // location.reload();
-      
-      /*close the list of autocompleted values,
-      (or any other open lists of autocompleted values:*/
-      closeAllLists();
-    }
-  });
+        /*close the list of autocompleted values,
+        (or any other open lists of autocompleted values:*/
+        closeAllLists();
+      }
+    });
+  }
 }
-
-

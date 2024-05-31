@@ -50,7 +50,19 @@ header img {
   border-style: solid;
   height: auto;
   width: 50%;
+  animation : introduce 2s;
 }
+
+@keyframes introduce {
+  from{
+    transform: rotateY(90deg);
+  }
+  to{
+    transform: rotateY(0deg);
+  }
+  
+}
+
 
 .header-signup {
   display: flex;
