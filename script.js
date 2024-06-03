@@ -3,7 +3,7 @@ let checkedSession = false;
 let actualSessionID = null;
 
 let host = "http://137.186.165.104:3000";
-host = "http://localhost:3000";
+//host = "http://localhost:3000";
 //host = "http://192.168.1.78:3000";
 var api_key;
 
