@@ -19,14 +19,14 @@ input[type="password"]::-ms-clear {
   width: 80%;
   max-width: 500px;
   height: 60px;
-  background-color: var(--first);
+  background-color: white;
   border-radius: 6px;
-  margin: 10px auto;
+  margin: 20px auto;
 }
 
 .Label {
   position: absolute;
-  margin: 6px;
+  margin: 15px;
   color: var(--third);
   font-size: x-large;
   /* animation: reSizeFont 3s; */
@@ -35,11 +35,11 @@ input[type="password"]::-ms-clear {
 .InputBox {
   position: absolute;
   color: var(--third);
-  width: 80%;
+  width: 65%;
   max-width: 500px;
-  height: 60px;
+  /* height: 60px; */
   font-size: large;
-  padding-top: 12px;
+  margin-top: 30px;
   padding-left: 18px;
   background-color: transparent;
   border: none;
@@ -48,17 +48,21 @@ input[type="password"]::-ms-clear {
 
 @keyframes reSizeFont {
   from {
-    font-size: x-large;
-  }
-  to {
-    font-size: medium;
-  }
+      font-size: x-large;
+      margin: 15px;
+}
+to {
+    font-size: small;
+    margin: 8px;
+}
 }
 @keyframes reSizeFontInvert {
-  from {
-    font-size: medium;
-  }
-  to {
+    from {
+        margin: 8px;
+        font-size: small;
+    }
+    to {
+      margin: 15px;
     font-size: x-large;
   }
 }

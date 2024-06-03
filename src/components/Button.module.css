@@ -1,0 +1,39 @@
+:root {
+  --first: #d9dcd6;
+  --secondy: #3a7ca5;
+  --third: #2f6690;
+  --fourth: #81c3d7;
+  --fifth: #16425b;
+}
+*{
+    color: var(--fifth);
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+.Button {
+  display: block;
+  width: 80%;
+  max-width: 500px;
+  height: 60px;
+  font-size: x-large;
+  font-weight: bold;
+  color: white;
+  background-color: var(--third);
+  border-radius: 6px;
+  margin: 10px auto;
+
+}
+@keyframes reSizeFontInvert {
+    from {
+        margin: 8px;
+        font-size: small;
+    }
+    to {
+      margin: 15px;
+    font-size: x-large;
+  }
+}

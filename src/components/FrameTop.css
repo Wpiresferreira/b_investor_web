@@ -1,0 +1,29 @@
+:root {
+  --first: #d9dcd6;
+  --second: #3a7ca5;
+  --third: #2f6690;
+  --fourth: #81c3d7;
+  --fifth: #16425b;
+}
+
+.img-container{
+  height: 15vh;
+}
+
+img{
+  max-height:100%;
+  max-width:100%;
+
+}
+.FrameTop{
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 25vh;
+  border-radius: 40px 40px 0 0;
+  align-items: center;
+}
+h1{
+  text-align: center;
+  color: var(--third);
+}

@@ -1,0 +1,31 @@
+:root {
+  --first: #d9dcd6;
+  --secondy: #3a7ca5;
+  --third: #2f6690;
+  --fourth: #81c3d7;
+  --fifth: #16425b;
+}
+.FrameLogin{
+  width: 100vw;
+  height: 75vh;
+  /* margin-top: 25vh; */
+  padding-top: 5vh;
+  border-radius: 40px 40px 0 0;
+  background-color: var(--first);
+}
+.p{
+  text-align: center;
+}
+
+.checkbox{
+  margin-left: 10vw;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+}
+
+.label{
+  padding: 10px;
+  vertical-align: middle;
+
+}

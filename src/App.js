@@ -1,15 +1,18 @@
 import './index.css';
-import DefaultBox from './components/DefaultBox';
+import FrameLogin from './components/FrameLogin';
+import FrameTop from './components/FrameTop';
+import TestComponent from './components/TestComponent';
+
 
 function App() {
+
+  
   return (
     <div className="App">
-      <DefaultBox label ='Username'>
-      </DefaultBox>
-      <DefaultBox label ='Password' type='password'>
-      </DefaultBox>
-      
-      <button> teste </button>
+
+<TestComponent/>
+      {/* <FrameTop title='B Investor'/>
+      <FrameLogin/> */}
     </div>
   );
 }
